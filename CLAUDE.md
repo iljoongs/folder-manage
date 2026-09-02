@@ -34,11 +34,11 @@ make-folder/
 | [doc/02-architecture.md](doc/02-architecture.md) | MVVM 계층 구조, 프로젝트/폴더 구성 |
 | [doc/03-folder-naming-spec.md](doc/03-folder-naming-spec.md) | 폴더 이름 생성 규칙 (시작/종료/증가 단위/자리수/접두사·접미사), 유효성 검사 |
 | [doc/04-ui-flow.md](doc/04-ui-flow.md) | 화면 구성, 미리보기 → 생성 흐름 |
-| [doc/05-open-decisions.md](doc/05-open-decisions.md) | 아직 결정되지 않은 항목 (구현 전 확정 필요) |
+| [doc/05-open-decisions.md](doc/05-open-decisions.md) | 구현 전 확정한 결정 사항 기록 (새 미결정 항목이 생기면 여기에 추가) |
 
 ## 개발 단계
 
-현재는 **개발 계획 수립 단계**다. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 소스 코드(.cs, .xaml 등)를 작성하지 않는다. 그 전까지는 위 doc/ 문서를 다듬고 [doc/05-open-decisions.md](doc/05-open-decisions.md)의 미결정 항목을 하나씩 확정하는 데 집중한다.
+**개발 계획 검토 및 확정 완료** — 개요/아키텍처/이름 생성 규칙/UI 흐름 문서화 및 결정 사항([doc/05-open-decisions.md](doc/05-open-decisions.md)) 확정까지 마쳤다. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 소스 코드(.cs, .xaml 등)를 작성하지 않는다.
 
 ## 작업 원칙
 
