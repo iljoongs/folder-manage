@@ -31,6 +31,17 @@ make-folder/
 
 exe 아이콘(탐색기/작업 표시줄)과 `MainWindow` 타이틀바 아이콘 모두 `src/MakeFolder/Assets/AppIcon.ico`를 사용한다. 원본은 루트의 `make-folder.png`(512x512, 알파 채널 포함)이며, 16/32/48/256px로 고품질 리샘플링(`InterpolationMode.HighQualityBicubic`, 알파 유지) 후 PNG-압축 아이콘 항목으로 묶은 `.ico`로 변환했다(video-vault와 동일한 방식, 변환 스크립트 자체는 프로젝트에 포함하지 않음). `MakeFolder.csproj`의 `<ApplicationIcon>`과 `MainWindow.xaml`의 `Icon` 속성에서 이 파일을 참조한다.
 
+## 단독 실행 파일(배포용) 만들기
+
+.NET 런타임이 설치되어 있지 않은 PC에서도 바로 실행할 수 있는 단일 exe 파일을 아래 명령으로 만든다(개발 중 `dotnet build`/`dotnet run`에는 영향 없음).
+
+```
+dotnet publish src/MakeFolder/MakeFolder.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish/win-x64
+```
+
+- 결과물은 `publish/win-x64/MakeFolder.exe` 하나다(같이 생기는 `.pdb`는 디버그 심볼이라 배포에는 필요 없음). .NET 런타임을 그 안에 포함하므로 이 exe 하나만 다른 PC에 복사해도 실행된다.
+- `publish/`는 빌드 산출물이라 `.gitignore`에 포함되어 저장소에 커밋되지 않는다. 배포가 필요할 때마다 위 명령으로 다시 생성한다.
+
 ## 보조 지시서 목록 (doc/ 폴더)
 
 작업 성격에 맞는 문서를 참조하세요.

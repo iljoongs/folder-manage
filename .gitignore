@@ -1,6 +1,7 @@
 # ===== .NET / C# / WPF =====
 bin/
 obj/
+publish/
 *.user
 *.suo
 *.userosscache
