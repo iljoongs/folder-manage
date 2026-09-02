@@ -2,40 +2,43 @@
 
 이 문서는 프로젝트의 메인 지시서입니다. 작업 시작 전 아래 보조 지시서를 모두 읽고 진행하세요.
 
-이 문서는 상위 폴더의 형제 프로젝트(`image-readers`, `text-readers`, `english-training`, `video-vault`)들이 공통으로 따르는 지시서 구조와 작업 원칙을 뽑아 정리한 것입니다. 프로젝트별 세부 내용(프로젝트 한 줄 요약, 기술 스택 상세, doc/ 목록 등)은 아래 표를 채워 넣어 확장하세요.
+이 문서의 작업 원칙은 상위 폴더의 형제 프로젝트(`image-readers`, `text-readers`, `english-training`, `video-vault`)들이 공통으로 따르는 지시서 구조에서 가져왔습니다.
 
 ## 프로젝트 한 줄 요약
-_(TODO: 이 프로젝트가 무엇을 하는지 한 줄로 작성)_
+특정 상위 폴더를 선택하면, 그 안에 시작~종료 범위의 연속된 번호 폴더를 자동으로 만들어주는 WPF 데스크톱 도구.
 
 ## 기술 스택
-형제 프로젝트들의 공통 스택(참고용, 이 프로젝트 성격에 맞게 조정):
 - .NET 8
 - WPF (Windows Presentation Foundation) — C#
-- MVVM 패턴 권장 (Repository → Service → ViewModel → View 계층 분리)
-- 데이터 저장: JSON 파일 (`data/` 또는 `.data/` 폴더)
+- MVVM 패턴 (Service → ViewModel → View 계층 분리, [doc/02-architecture.md](doc/02-architecture.md) 참고)
 
-## 폴더 구조 (공통 패턴)
+## 폴더 구조
 
 ```
-<project>/
+make-folder/
 ├── CLAUDE.md          # 메인 지시서 (이 파일)
-├── <project>.sln
+├── make-folder.sln    # (구현 시작 시 생성)
 ├── .gitignore
-├── data/ 또는 .data/  # 런타임 데이터 (JSON 등)
 ├── doc/               # 기능별 상세 보조 지시서
 └── src/
-    └── <ProjectName>/ # 앱 본체 소스
+    └── MakeFolder/    # 앱 본체 소스 (구현 시작 시 생성, 이름은 doc/05-open-decisions.md에서 확정)
 ```
 
 ## 보조 지시서 목록 (doc/ 폴더)
 
-작업 성격에 맞는 문서를 참조하세요. _(TODO: 아래는 예시 형식 — 실제 doc/ 파일이 생기면 표를 채운다)_
+작업 성격에 맞는 문서를 참조하세요.
 
 | 문서 | 내용 |
 |---|---|
-| [doc/01-overview.md](doc/01-overview.md) | 프로젝트 개요, 목표, 범위 |
-| [doc/02-architecture.md](doc/02-architecture.md) | 프로젝트 구조, MVVM 설계, 폴더/네임스페이스 구성 |
-| [doc/coding-convention.md](doc/coding-convention.md) | 네이밍, 계층 책임, 데이터 저장·파싱 규칙, 테스트/커밋 컨벤션 |
+| [doc/01-overview.md](doc/01-overview.md) | 프로젝트 개요, 목적, v1(MVP) 범위 |
+| [doc/02-architecture.md](doc/02-architecture.md) | MVVM 계층 구조, 프로젝트/폴더 구성 |
+| [doc/03-folder-naming-spec.md](doc/03-folder-naming-spec.md) | 폴더 이름 생성 규칙 (시작/종료/증가 단위/자리수/접두사·접미사), 유효성 검사 |
+| [doc/04-ui-flow.md](doc/04-ui-flow.md) | 화면 구성, 미리보기 → 생성 흐름 |
+| [doc/05-open-decisions.md](doc/05-open-decisions.md) | 아직 결정되지 않은 항목 (구현 전 확정 필요) |
+
+## 개발 단계
+
+현재는 **개발 계획 수립 단계**다. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 소스 코드(.cs, .xaml 등)를 작성하지 않는다. 그 전까지는 위 doc/ 문서를 다듬고 [doc/05-open-decisions.md](doc/05-open-decisions.md)의 미결정 항목을 하나씩 확정하는 데 집중한다.
 
 ## 작업 원칙
 
