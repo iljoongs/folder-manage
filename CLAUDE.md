@@ -16,12 +16,14 @@
 
 ```
 make-folder/
-├── CLAUDE.md          # 메인 지시서 (이 파일)
-├── make-folder.sln    # (구현 시작 시 생성)
+├── CLAUDE.md              # 메인 지시서 (이 파일)
+├── make-folder.sln
 ├── .gitignore
-├── doc/               # 기능별 상세 보조 지시서
-└── src/
-    └── MakeFolder/    # 앱 본체 소스 (구현 시작 시 생성, 이름은 doc/05-open-decisions.md에서 확정)
+├── doc/                   # 기능별 상세 보조 지시서
+├── src/
+│   └── MakeFolder/        # 앱 본체 (Models/Services/ViewModels/Views)
+└── tests/
+    └── MakeFolder.Tests/  # xUnit 단위 테스트 (FolderNameGenerator, FolderCreationService)
 ```
 
 ## 보조 지시서 목록 (doc/ 폴더)
@@ -38,7 +40,7 @@ make-folder/
 
 ## 개발 단계
 
-**개발 계획 검토 및 확정 완료** — 개요/아키텍처/이름 생성 규칙/UI 흐름 문서화 및 결정 사항([doc/05-open-decisions.md](doc/05-open-decisions.md)) 확정까지 마쳤다. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 소스 코드(.cs, .xaml 등)를 작성하지 않는다.
+**v1(MVP) 구현 완료.** [doc/01-overview.md](doc/01-overview.md)~[doc/05-open-decisions.md](doc/05-open-decisions.md) 계획대로 상위 폴더 선택, 접두사/접미사, 시작/종료/증가 단위/자리수 입력, 미리보기(신규/이미 존재/충돌 구분, 대량 생성 확인), 폴더 생성까지 동작한다. `FolderNameGenerator`/`FolderCreationService`는 `tests/MakeFolder.Tests`의 xUnit 테스트로 검증했고, 실제 앱을 실행해 골든 패스(생성)와 스킵/충돌/유효성 오류 케이스를 확인했다.
 
 ## 작업 원칙
 
