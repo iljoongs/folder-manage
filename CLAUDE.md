@@ -19,12 +19,17 @@ make-folder/
 ├── CLAUDE.md              # 메인 지시서 (이 파일)
 ├── make-folder.sln
 ├── .gitignore
+├── make-folder.png        # 앱 아이콘 원본 PNG (512x512, 코드 아님, 루트 유지)
 ├── doc/                   # 기능별 상세 보조 지시서
 ├── src/
-│   └── MakeFolder/        # 앱 본체 (Models/Services/ViewModels/Views)
+│   └── MakeFolder/        # 앱 본체 (Models/Services/ViewModels/Views, Assets/AppIcon.ico)
 └── tests/
     └── MakeFolder.Tests/  # xUnit 단위 테스트 (FolderNameGenerator, FolderCreationService)
 ```
+
+## 앱 아이콘
+
+exe 아이콘(탐색기/작업 표시줄)과 `MainWindow` 타이틀바 아이콘 모두 `src/MakeFolder/Assets/AppIcon.ico`를 사용한다. 원본은 루트의 `make-folder.png`(512x512, 알파 채널 포함)이며, 16/32/48/256px로 고품질 리샘플링(`InterpolationMode.HighQualityBicubic`, 알파 유지) 후 PNG-압축 아이콘 항목으로 묶은 `.ico`로 변환했다(video-vault와 동일한 방식, 변환 스크립트 자체는 프로젝트에 포함하지 않음). `MakeFolder.csproj`의 `<ApplicationIcon>`과 `MainWindow.xaml`의 `Icon` 속성에서 이 파일을 참조한다.
 
 ## 보조 지시서 목록 (doc/ 폴더)
 
