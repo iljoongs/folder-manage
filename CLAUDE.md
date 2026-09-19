@@ -1,11 +1,13 @@
-# make-folder - 메인 지시서
+# folder-manage - 메인 지시서
 
 이 문서는 프로젝트의 메인 지시서입니다. 작업 시작 전 아래 보조 지시서를 모두 읽고 진행하세요.
+
+> **앱 이름은 `folder-manage`로 정했다**(여러 기능을 탭으로 담는 앱이 되었기 때문, [doc/05-open-decisions.md](doc/05-open-decisions.md)). 다만 **코드와 저장소는 아직 이전 이름 그대로**다 — 프로젝트 `MakeFolder`, 솔루션 `make-folder.sln`, 실행 파일 `MakeFolder.exe`, 아이콘 원본 `make-folder.png`, GitHub 저장소/로컬 폴더 `make-folder`. 이 문서의 폴더 구조·배포 명령 등은 코드의 실제 상태를 설명하므로 이전 이름으로 적혀 있고, 이름을 바꾸는 작업 때 함께 갱신한다 → [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) "앱 이름 변경 계획".
 
 이 문서의 작업 원칙은 상위 폴더의 형제 프로젝트(`image-readers`, `text-readers`, `english-training`, `video-vault`)들이 공통으로 따르는 지시서 구조에서 가져왔습니다.
 
 ## 프로젝트 한 줄 요약
-여러 기능을 탭으로 나눠 제공하는 WPF 데스크톱 앱. 메인 윈도우는 탭 구조이고 탭은 기능 단위로 나눈다([doc/06-main-window-tabs.md](doc/06-main-window-tabs.md)). 탭 1 "폴더 만들기"는 상위 폴더를 선택하면 그 안에 시작~종료 범위의 연속된 번호 폴더를 만들어주는 기능(지금까지 만든 make-folder)이고, 탭 2 "이미지 파일 변경"은 한 폴더 안에서 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾸는 기능이다. 그 외 탭이 있다면 사용자가 설명할 예정이다.
+여러 기능을 탭으로 나눠 제공하는 WPF 데스크톱 앱. 메인 윈도우는 탭 구조이고 탭은 기능 단위로 나눈다([doc/06-main-window-tabs.md](doc/06-main-window-tabs.md)). 탭 1 "폴더 만들기"는 상위 폴더를 선택하면 그 안에 시작~종료 범위의 연속된 번호 폴더를 만들어주는 기능(지금까지 만든 make-folder 기능)이고, 탭 2 "이미지 파일 이름 변경"은 한 폴더 안에서 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾸는 기능이다. 그 외 탭이 있다면 사용자가 설명할 예정이다.
 
 ## 기술 스택
 - .NET 8
@@ -53,8 +55,8 @@ dotnet publish src/MakeFolder/MakeFolder.csproj -c Release -r win-x64 --self-con
 | [doc/03-folder-naming-spec.md](doc/03-folder-naming-spec.md) | (탭 1) 폴더 이름 생성 규칙 (시작/종료/증가 단위/자리수/접두사·접미사), 입력 기본값, 유효성 검사, 자동 생성(빠진 번호 채우기) |
 | [doc/04-ui-flow.md](doc/04-ui-flow.md) | (탭 1) 화면 구성, 미리보기 → 생성 흐름, 자동 생성 버튼, 접미사 입력란 동작 |
 | [doc/05-open-decisions.md](doc/05-open-decisions.md) | 확정한 결정 사항 기록과 아직 정해지지 않은 항목 (새 미결정 항목이 생기면 여기에 추가) |
-| [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) | 메인 윈도우의 탭 구조, 탭 목록, 탭 공통 규칙, 새 탭 추가 절차, 탭 구조로의 구현 개편 계획 |
-| [doc/07-image-rename-spec.md](doc/07-image-rename-spec.md) | (탭 2) 이미지 파일 변경: 공통 이름 판단 규칙(확장자·`.debug`/`.debug-result` 접미사), 이름 그룹, 이름 변경 동작, 안전 규칙(초안) |
+| [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) | 메인 윈도우의 탭 구조, 탭 목록, 탭 공통 규칙, 새 탭 추가 절차, 앱 이름 변경 계획, 탭 구조로의 구현 개편 계획 |
+| [doc/07-image-rename-spec.md](doc/07-image-rename-spec.md) | (탭 2) 이미지 파일 이름 변경: 공통 이름 판단 규칙(확장자 앞 `.debug`/`.debug-result` 접미사), 이름 그룹, 사용자가 직접 입력하는 새 이름, 안전 규칙(초안) |
 
 ## 개발 단계
 
