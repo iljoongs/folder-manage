@@ -50,13 +50,13 @@ dotnet publish src/MakeFolder/MakeFolder.csproj -c Release -r win-x64 --self-con
 |---|---|
 | [doc/01-overview.md](doc/01-overview.md) | 프로젝트 개요, 목적, v1(MVP) 범위 |
 | [doc/02-architecture.md](doc/02-architecture.md) | MVVM 계층 구조, 프로젝트/폴더 구성 |
-| [doc/03-folder-naming-spec.md](doc/03-folder-naming-spec.md) | 폴더 이름 생성 규칙 (시작/종료/증가 단위/자리수/접두사·접미사), 유효성 검사 |
-| [doc/04-ui-flow.md](doc/04-ui-flow.md) | 화면 구성, 미리보기 → 생성 흐름 |
+| [doc/03-folder-naming-spec.md](doc/03-folder-naming-spec.md) | 폴더 이름 생성 규칙 (시작/종료/증가 단위/자리수/접두사·접미사), 입력 기본값, 유효성 검사, 자동 생성(빠진 번호 채우기) |
+| [doc/04-ui-flow.md](doc/04-ui-flow.md) | 화면 구성, 미리보기 → 생성 흐름, 자동 생성 버튼, 접미사 입력란 동작 |
 | [doc/05-open-decisions.md](doc/05-open-decisions.md) | 구현 전 확정한 결정 사항 기록 (새 미결정 항목이 생기면 여기에 추가) |
 
 ## 개발 단계
 
-**v1(MVP) 구현 완료.** [doc/01-overview.md](doc/01-overview.md)~[doc/05-open-decisions.md](doc/05-open-decisions.md) 계획대로 상위 폴더 선택, 접두사/접미사, 시작/종료/증가 단위/자리수 입력, 미리보기(신규/이미 존재/충돌 구분, 대량 생성 확인), 폴더 생성까지 동작한다. `FolderNameGenerator`/`FolderCreationService`는 `tests/MakeFolder.Tests`의 xUnit 테스트로 검증했고, 실제 앱을 실행해 골든 패스(생성)와 스킵/충돌/유효성 오류 케이스를 확인했다.
+**v1(MVP) 구현 완료.** [doc/01-overview.md](doc/01-overview.md)~[doc/05-open-decisions.md](doc/05-open-decisions.md) 계획대로 상위 폴더 선택, 접두사/접미사, 시작/종료/증가 단위/자리수 입력, 미리보기(신규/이미 존재/충돌 구분, 대량 생성 확인), 폴더 생성까지 동작한다. 이후 추가: 입력 기본값(접미사 `화`, 자리수 `1`), 접미사 기본값 자동 삭제, "자동 생성" 버튼(기존 숫자 폴더 사이의 빠진 번호 채우기). `FolderNameGenerator`/`FolderCreationService`/`MainViewModel`은 `tests/MakeFolder.Tests`의 xUnit 테스트로 검증했고, 실제 앱을 실행해 골든 패스(생성)와 스킵/충돌/유효성 오류 케이스를 확인했다.
 
 ## 작업 원칙
 

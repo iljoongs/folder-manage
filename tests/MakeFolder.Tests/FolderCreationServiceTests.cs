@@ -22,6 +22,18 @@ public class FolderCreationServiceTests : IDisposable
     }
 
     [Fact]
+    public void GetSubfolderNames_ReturnsOnlyFolderNames()
+    {
+        Directory.CreateDirectory(Path.Combine(_tempRoot, "1화"));
+        Directory.CreateDirectory(Path.Combine(_tempRoot, "2화"));
+        File.WriteAllText(Path.Combine(_tempRoot, "3화"), "not a folder");
+
+        var names = FolderCreationService.GetSubfolderNames(_tempRoot);
+
+        Assert.Equal(new[] { "1화", "2화" }, names.OrderBy(n => n).ToArray());
+    }
+
+    [Fact]
     public void GetStatus_FolderDoesNotExist_ReturnsNew()
     {
         var status = FolderCreationService.GetStatus(_tempRoot, "01");

@@ -8,6 +8,14 @@ namespace MakeFolder.Services;
 /// </summary>
 public static class FolderCreationService
 {
+    public static IReadOnlyList<string> GetSubfolderNames(string parentFolderPath)
+    {
+        return new DirectoryInfo(parentFolderPath)
+            .EnumerateDirectories()
+            .Select(d => d.Name)
+            .ToList();
+    }
+
     public static FolderPreviewItem GetStatus(string parentFolderPath, string name)
     {
         var fullPath = Path.Combine(parentFolderPath, name);

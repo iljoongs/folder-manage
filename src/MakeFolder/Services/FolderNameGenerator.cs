@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text.RegularExpressions;
 using MakeFolder.Models;
 
 namespace MakeFolder.Services;
@@ -49,6 +50,29 @@ public static class FolderNameGenerator
         var count = ((long)end - start) / step + 1;
         var parsed = new ParsedFolderSequence(input.ParentFolderPath, input.Prefix, input.Suffix, start, end, step, digitCount, count);
         return FolderSequenceValidationResult.Success(parsed);
+    }
+
+    /// <summary>
+    /// 폴더 이름 목록에서 <c>접두사 + 숫자 + 접미사</c> 형식에 맞는 이름의 숫자만 뽑아 오름차순·중복 없이 돌려준다.
+    /// 자리수(0 패딩)는 무시한다 (예: "01화"와 "1화"는 모두 1).
+    /// </summary>
+    public static IReadOnlyList<int> ExtractNumbers(IEnumerable<string> folderNames, string prefix, string suffix)
+    {
+        var pattern = new Regex(
+            $@"^{Regex.Escape(prefix)}([0-9]+){Regex.Escape(suffix)}\z",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        var numbers = new SortedSet<int>();
+        foreach (var name in folderNames)
+        {
+            var match = pattern.Match(name);
+            if (match.Success && int.TryParse(match.Groups[1].Value, out var number))
+            {
+                numbers.Add(number);
+            }
+        }
+
+        return numbers.ToList();
     }
 
     public static IReadOnlyList<string> GenerateNames(ParsedFolderSequence parsed)

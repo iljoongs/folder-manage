@@ -143,6 +143,58 @@ public class FolderNameGeneratorTests
     }
 
     [Fact]
+    public void ExtractNumbers_MatchesPrefixNumberSuffix_SortedAndDistinct()
+    {
+        var names = new[] { "20화", "1화", "2화", "abc", "3", "10회", "화", "1화 ", "-1화", "2화" };
+
+        var numbers = FolderNameGenerator.ExtractNumbers(names, "", "화");
+
+        Assert.Equal(new[] { 1, 2, 20 }, numbers);
+    }
+
+    [Fact]
+    public void ExtractNumbers_IgnoresZeroPadding()
+    {
+        var numbers = FolderNameGenerator.ExtractNumbers(new[] { "01화", "1화", "003화" }, "", "화");
+
+        Assert.Equal(new[] { 1, 3 }, numbers);
+    }
+
+    [Fact]
+    public void ExtractNumbers_WithPrefixAndRegexSpecialCharacters_TreatsThemLiterally()
+    {
+        var names = new[] { "(v)1.x", "(v)2.x", "(v)3Yx", "v1.x" };
+
+        var numbers = FolderNameGenerator.ExtractNumbers(names, "(v)", ".x");
+
+        Assert.Equal(new[] { 1, 2 }, numbers);
+    }
+
+    [Fact]
+    public void ExtractNumbers_EmptyPrefixAndSuffix_MatchesPureNumberNames()
+    {
+        var numbers = FolderNameGenerator.ExtractNumbers(new[] { "1", "02", "a", "1화" }, "", "");
+
+        Assert.Equal(new[] { 1, 2 }, numbers);
+    }
+
+    [Fact]
+    public void ExtractNumbers_NumberTooLargeForInt_IsIgnored()
+    {
+        var numbers = FolderNameGenerator.ExtractNumbers(new[] { "99999999999화", "5화" }, "", "화");
+
+        Assert.Equal(new[] { 5 }, numbers);
+    }
+
+    [Fact]
+    public void ExtractNumbers_IsCaseInsensitive()
+    {
+        var numbers = FolderNameGenerator.ExtractNumbers(new[] { "EP1", "ep2" }, "Ep", "");
+
+        Assert.Equal(new[] { 1, 2 }, numbers);
+    }
+
+    [Fact]
     public void Validate_ComputesCountWithoutMaterializingNames()
     {
         var validation = FolderNameGenerator.Validate(MakeInput(startText: "1", endText: "9", stepText: "2"));

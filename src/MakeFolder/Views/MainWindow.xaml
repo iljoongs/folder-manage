@@ -43,8 +43,12 @@
             <TextBox Grid.Column="1" Text="{Binding Prefix, UpdateSourceTrigger=PropertyChanged}"
                      VerticalContentAlignment="Center" />
             <TextBlock Grid.Column="2" Text="접미사" VerticalAlignment="Center" Margin="16,0,8,0" />
-            <TextBox Grid.Column="3" Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalContentAlignment="Center" />
+            <TextBox x:Name="SuffixTextBox" Grid.Column="3"
+                     Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center"
+                     PreviewMouseLeftButtonDown="SuffixTextBox_PreviewMouseLeftButtonDown"
+                     GotKeyboardFocus="SuffixTextBox_GotKeyboardFocus"
+                     TextChanged="SuffixTextBox_TextChanged" />
         </Grid>
 
         <!-- 시작 / 종료 / 증가 단위 / 자리수 -->
@@ -76,6 +80,8 @@
 
         <!-- 실행 버튼 -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,8">
+            <Button Content="자동 생성" Padding="14,6" Margin="0,0,8,0" Command="{Binding AutoCreateCommand}"
+                    ToolTip="상위 폴더에서 접두사·접미사 형식의 숫자 폴더를 찾아, 가장 작은 번호와 가장 큰 번호 사이에서 빠진 폴더를 바로 만듭니다." />
             <Button Content="미리보기" Padding="14,6" Margin="0,0,8,0" Command="{Binding PreviewCommand}" />
             <Button Content="폴더 생성" Padding="14,6" Command="{Binding CreateCommand}" />
         </StackPanel>
