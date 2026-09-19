@@ -10,10 +10,11 @@
 
 | 순서 | 탭 이름 | 기능 | 상세 문서 |
 |---|---|---|---|
-| 1 | 폴더 만들기 (임시 이름) | 상위 폴더를 선택해 연속 번호 폴더를 만들고, 빠진 번호를 자동으로 채운다 | [01-overview.md](01-overview.md) "탭 1", [03-folder-naming-spec.md](03-folder-naming-spec.md), [04-ui-flow.md](04-ui-flow.md) |
-| 2 이후 | (미정) | 사용자가 탭별 기능을 설명해 줄 예정 — 설명을 받은 뒤 이 표를 채운다 | (기능 설명 후 작성) |
+| 1 | 폴더 만들기 | 기존 MakeFolder 기능: 상위 폴더를 선택해 연속 번호 폴더를 만들고, 빠진 번호를 자동으로 채운다 | [01-overview.md](01-overview.md) "탭 1", [03-folder-naming-spec.md](03-folder-naming-spec.md), [04-ui-flow.md](04-ui-flow.md) |
+| 2 | 이미지 파일 변경 | 폴더와 파일이 함께 있는 폴더에서, (확장자·`.debug`/`.debug-result` 접미사를 뺀) 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾼다 | [07-image-rename-spec.md](07-image-rename-spec.md) |
+| 3 이후 | (미정) | 사용자가 설명하면 이 표에 추가한다 | (기능 설명 후 작성) |
 
-탭 이름과 순서는 [05-open-decisions.md](05-open-decisions.md)의 미결정 항목이다.
+탭 이름과 순서(1, 2)는 사용자가 정했다. 탭 2의 세부 규칙 중 정해지지 않은 부분은 [05-open-decisions.md](05-open-decisions.md)의 "탭 2 미결정 항목"에 있다.
 
 ## 메인 윈도우(셸)의 역할
 
@@ -42,6 +43,8 @@
 |---|---|
 | `Views/MainWindow.xaml` — 폴더 만들기 UI가 창 전체를 차지 | 탭을 담는 셸(TabControl)로 교체. 기존 UI는 `Views/MakeFolderTabView.xaml`(UserControl)로 옮긴다. 접미사 입력란의 기본값 자동 삭제 동작([04-ui-flow.md](04-ui-flow.md))도 함께 옮긴다 |
 | `ViewModels/MainViewModel.cs` — 폴더 만들기 로직 | `MakeFolderViewModel`로 이름을 바꾼다. 메인 윈도우용 ViewModel(`MainWindowViewModel`)은 탭 ViewModel 목록을 들고 있는 최소한의 역할만 한다 |
+| (없음) | 탭 2용으로 `Views/ImageRenameTabView.xaml`(UserControl)과 `ImageRenameViewModel`(가칭), 이름 그룹 판정/이름 변경 서비스를 새로 만든다 → [07-image-rename-spec.md](07-image-rename-spec.md) |
 | `App.xaml.cs` — `MainViewModel`, `DialogService` 조립 | 각 탭 ViewModel과 공용 서비스(`IDialogService` 등)를 조립해 메인 윈도우에 넘긴다 |
 | `tests/MakeFolder.Tests/MainViewModelTests.cs` | 이름 변경을 따라간다. 나머지 서비스 테스트는 그대로 |
-| `Models/`, `Services/` (계층별 폴더) | 탭이 늘어나면 기능(탭)별 폴더로 나눌지 결정한다 — [05-open-decisions.md](05-open-decisions.md) 참고 |
+| `Models/`, `Services/` (계층별 폴더) | 탭이 2개가 되므로 기능(탭)별 폴더로 나눌지 결정한다 — [05-open-decisions.md](05-open-decisions.md) 참고 |
+| 폴더/파일 이름 검증(금지 문자 등, 현재 `FolderNameGenerator.Validate` 안에 있음) | 탭 1과 탭 2가 함께 쓰므로 공용 서비스로 뽑는 것을 제안 — [02-architecture.md](02-architecture.md) |

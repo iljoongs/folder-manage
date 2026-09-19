@@ -5,7 +5,7 @@
 이 문서의 작업 원칙은 상위 폴더의 형제 프로젝트(`image-readers`, `text-readers`, `english-training`, `video-vault`)들이 공통으로 따르는 지시서 구조에서 가져왔습니다.
 
 ## 프로젝트 한 줄 요약
-여러 기능을 탭으로 나눠 제공하는 WPF 데스크톱 앱. 메인 윈도우는 탭 구조이고 탭은 기능 단위로 나눈다([doc/06-main-window-tabs.md](doc/06-main-window-tabs.md)). 탭 1은 상위 폴더를 선택하면 그 안에 시작~종료 범위의 연속된 번호 폴더를 만들어주는 "폴더 만들기" 기능(지금까지 만든 make-folder)이고, 나머지 탭의 기능은 사용자가 설명할 예정이다.
+여러 기능을 탭으로 나눠 제공하는 WPF 데스크톱 앱. 메인 윈도우는 탭 구조이고 탭은 기능 단위로 나눈다([doc/06-main-window-tabs.md](doc/06-main-window-tabs.md)). 탭 1 "폴더 만들기"는 상위 폴더를 선택하면 그 안에 시작~종료 범위의 연속된 번호 폴더를 만들어주는 기능(지금까지 만든 make-folder)이고, 탭 2 "이미지 파일 변경"은 한 폴더 안에서 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾸는 기능이다. 그 외 탭이 있다면 사용자가 설명할 예정이다.
 
 ## 기술 스택
 - .NET 8
@@ -54,10 +54,11 @@ dotnet publish src/MakeFolder/MakeFolder.csproj -c Release -r win-x64 --self-con
 | [doc/04-ui-flow.md](doc/04-ui-flow.md) | (탭 1) 화면 구성, 미리보기 → 생성 흐름, 자동 생성 버튼, 접미사 입력란 동작 |
 | [doc/05-open-decisions.md](doc/05-open-decisions.md) | 확정한 결정 사항 기록과 아직 정해지지 않은 항목 (새 미결정 항목이 생기면 여기에 추가) |
 | [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) | 메인 윈도우의 탭 구조, 탭 목록, 탭 공통 규칙, 새 탭 추가 절차, 탭 구조로의 구현 개편 계획 |
+| [doc/07-image-rename-spec.md](doc/07-image-rename-spec.md) | (탭 2) 이미지 파일 변경: 공통 이름 판단 규칙(확장자·`.debug`/`.debug-result` 접미사), 이름 그룹, 이름 변경 동작, 안전 규칙(초안) |
 
 ## 개발 단계
 
-**진행 중: 메인 윈도우를 탭 구조로 개편하는 계획 단계.** 앱 전체를 기능별 탭으로 바꾸고, 지금까지 만든 make-folder는 탭 1이 된다. 사용자가 탭별 기능을 설명해 주면 문서([doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) 등)를 채우며, 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 소스 코드(.cs, .xaml 등)를 바꾸지 않는다. 아래는 현재 코드(탭 구조 개편 전)의 상태다.
+**진행 중: 메인 윈도우를 탭 구조로 개편하는 계획 단계.** 앱 전체를 기능별 탭으로 바꾸고, 지금까지 만든 make-folder는 탭 1이 된다. 탭 1·2의 기능 설명은 문서에 반영했고(탭 2는 초안, 미결정 질문은 [doc/05-open-decisions.md](doc/05-open-decisions.md) "탭 2 미결정 항목"), 사용자가 답해 주면 문서를 확정한다. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 소스 코드(.cs, .xaml 등)를 바꾸지 않는다. 아래는 현재 코드(탭 구조 개편 전)의 상태다.
 
 **탭 1(폴더 만들기) v1(MVP) 구현 완료.** [doc/01-overview.md](doc/01-overview.md)~[doc/05-open-decisions.md](doc/05-open-decisions.md) 계획대로 상위 폴더 선택, 접두사/접미사, 시작/종료/증가 단위/자리수 입력, 미리보기(신규/이미 존재/충돌 구분, 대량 생성 확인), 폴더 생성까지 동작한다. 이후 추가: 입력 기본값(접미사 `화`, 자리수 `1`), 접미사 기본값 자동 삭제, "자동 생성" 버튼(기존 숫자 폴더 사이의 빠진 번호 채우기). `FolderNameGenerator`/`FolderCreationService`/`MainViewModel`은 `tests/MakeFolder.Tests`의 xUnit 테스트로 검증했고, 실제 앱을 실행해 골든 패스(생성)와 스킵/충돌/유효성 오류 케이스를 확인했다.
 

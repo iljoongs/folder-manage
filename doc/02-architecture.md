@@ -4,6 +4,8 @@
 
 메인 윈도우는 탭을 담는 셸이고, 각 탭이 하나의 기능이다 → [06-main-window-tabs.md](06-main-window-tabs.md). 탭은 저마다 View + ViewModel(+ 필요한 Model/Service)을 갖고 서로 독립적이다.
 
+탭은 현재 두 개다: 탭 1 폴더 만들기(아래 "계층 구조"에 설명한 기존 구현), 탭 2 이미지 파일 변경(계획만 있음, [07-image-rename-spec.md](07-image-rename-spec.md)). 탭 2의 서비스는 "이름 그룹 판정"(폴더·파일 이름에서 공통 이름 추출, 순수 로직)과 "이름 변경 실행"(파일 시스템 접근)으로 나누는 것을 제안한다 — 탭 1의 `FolderNameGenerator`/`FolderCreationService` 분리와 같은 방식이라 순수 로직을 파일 시스템 없이 테스트할 수 있다. 두 탭이 함께 쓰게 될 것(`IDialogService`, 폴더/파일 이름 검증 규칙)은 공용으로 뽑는 것을 제안한다 → [05-open-decisions.md](05-open-decisions.md) "코드 폴더 구조", "이름 검증 공용화".
+
 > **현재 코드는 아직 탭 구조로 바뀌지 않았다.** 메인 윈도우(`MainWindow`)와 `MainViewModel`이 곧 탭 1(폴더 만들기)의 내용이다. 개편 계획은 [06-main-window-tabs.md](06-main-window-tabs.md) "구현 계획".
 
 ## 계층 구조 (MVVM)
