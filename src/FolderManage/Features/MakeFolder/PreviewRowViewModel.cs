@@ -1,6 +1,5 @@
-using FolderManage.Models;
 
-namespace FolderManage.ViewModels;
+namespace FolderManage.Features.MakeFolder;
 
 public sealed class PreviewRowViewModel
 {

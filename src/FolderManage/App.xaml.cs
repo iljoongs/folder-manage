@@ -1,5 +1,7 @@
 ﻿using System.Windows;
-using FolderManage.Services;
+using FolderManage.Common;
+using FolderManage.Features.ImageRename;
+using FolderManage.Features.MakeFolder;
 using FolderManage.ViewModels;
 using FolderManage.Views;
 
@@ -13,7 +15,10 @@ public partial class App : Application
 
         IDialogService dialogService = new DialogService();
         var makeFolderViewModel = new MakeFolderViewModel(dialogService);
-        var mainWindow = new MainWindow(new MainWindowViewModel(makeFolderViewModel));
+        var imageRenameViewModel = new ImageRenameViewModel(
+            dialogService,
+            new JsonSuffixSettingsStore(JsonSuffixSettingsStore.DefaultFilePath));
+        var mainWindow = new MainWindow(new MainWindowViewModel(makeFolderViewModel, imageRenameViewModel));
 
         mainWindow.Show();
     }

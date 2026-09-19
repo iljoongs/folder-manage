@@ -1,5 +1,5 @@
-using FolderManage.Services;
-using FolderManage.ViewModels;
+using FolderManage.Common;
+using FolderManage.Features.MakeFolder;
 
 namespace FolderManage.Tests;
 
@@ -18,25 +18,6 @@ public class MakeFolderViewModelTests : IDisposable
         if (Directory.Exists(_tempRoot))
         {
             Directory.Delete(_tempRoot, recursive: true);
-        }
-    }
-
-    private sealed class FakeDialogService : IDialogService
-    {
-        public bool ConfirmResult { get; set; } = true;
-
-        public int ConfirmCallCount { get; private set; }
-
-        public string? SelectFolder(string? initialDirectory) => null;
-
-        public bool Confirm(string message, string title)
-        {
-            ConfirmCallCount++;
-            return ConfirmResult;
-        }
-
-        public void ShowError(string message, string title)
-        {
         }
     }
 

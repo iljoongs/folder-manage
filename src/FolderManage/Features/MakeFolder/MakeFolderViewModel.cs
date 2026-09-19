@@ -2,10 +2,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FolderManage.Models;
-using FolderManage.Services;
+using FolderManage.Common;
 
-namespace FolderManage.ViewModels;
+namespace FolderManage.Features.MakeFolder;
 
 public partial class MakeFolderViewModel : ObservableObject
 {

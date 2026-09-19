@@ -1,6 +1,6 @@
 # 04. UI 구성 및 흐름
 
-> 이 문서는 **탭 1(폴더 만들기)** 안의 화면 구성과 흐름이다. 메인 윈도우가 탭 구조로 바뀌면 아래 내용은 탭 1의 내용 영역에 들어간다 → [06-main-window-tabs.md](06-main-window-tabs.md). 현재 코드는 아직 탭 구조가 아니라 이 화면이 창 전체를 차지한다.
+> 이 문서는 **탭 1(폴더 만들기)** 안의 화면 구성과 흐름이다. 메인 윈도우는 탭 구조이고 아래 내용은 탭 1(`MakeFolderTabView`)의 내용 영역이다 → [06-main-window-tabs.md](06-main-window-tabs.md). 탭 2의 화면은 [07-image-rename-spec.md](07-image-rename-spec.md) "입력과 화면".
 
 ## 화면 구성 (탭 1, v1)
 

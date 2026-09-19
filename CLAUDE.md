@@ -25,9 +25,9 @@ folder-manage/
 ├── folder-manage.png      # 앱 아이콘 원본 PNG (512x512, 코드 아님, 루트 유지)
 ├── doc/                   # 기능별 상세 보조 지시서
 ├── src/
-│   └── FolderManage/      # 앱 본체 (Models/Services/ViewModels/Views, Assets/AppIcon.ico)
+│   └── FolderManage/      # 앱 본체 (Common/, Features/MakeFolder/, Features/ImageRename/, 탭 셸 ViewModels/·Views/, Assets/AppIcon.ico)
 └── tests/
-    └── FolderManage.Tests/  # xUnit 단위 테스트 (FolderNameGenerator, FolderCreationService, MakeFolderViewModel)
+    └── FolderManage.Tests/  # xUnit 단위 테스트 (탭 1: FolderNameGenerator, FolderCreationService, MakeFolderViewModel / 탭 2: NameGroupBuilder, RenamePlanner, RenameService, 접미사 저장소, ImageRenameViewModel / 공용: FileNameRules)
 ```
 
 ## 앱 아이콘
@@ -75,9 +75,9 @@ dotnet run --project src/FolderManage     # 앱 실행
 
 ## 개발 단계
 
-**탭 셸 개편 완료(2026-09-19), 탭 2는 계획 단계.** 메인 윈도우는 `TabControl` 셸(`MainWindow` + `MainWindowViewModel`)이고, 지금까지 만든 기능(이전 이름 make-folder)은 탭 1(`MakeFolderTabView` + `MakeFolderViewModel`)이 되었다. 탭은 지금 탭 1 하나뿐이다. 탭 2(이미지 파일 이름 변경)는 규칙을 사용자 답변으로 확정했고(2026-09-19, [doc/07-image-rename-spec.md](doc/07-image-rename-spec.md)) 코드는 아직 없다. 남은 세부는 [doc/05-open-decisions.md](doc/05-open-decisions.md) "탭 2 남은 세부 항목"이다. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 탭 2 등 새 기능의 소스 코드(.cs, .xaml 등)를 만들지 않는다. 아래는 탭 1의 상태다.
+**탭 셸 개편(2026-09-19)과 탭 2 구현(2026-09-20) 완료.** 메인 윈도우는 `TabControl` 셸(`MainWindow` + `MainWindowViewModel`)이고 탭은 두 개다: 탭 1 "폴더 만들기"(`Features/MakeFolder`, 이전 이름 make-folder의 기능), 탭 2 "이미지 파일 이름 변경"(`Features/ImageRename`, 규칙은 [doc/07-image-rename-spec.md](doc/07-image-rename-spec.md)). 코드는 기능(탭)별 폴더로 나눴고 두 탭이 함께 쓰는 것(`IDialogService`/`DialogService`, 이름 규칙 `FileNameRules`)은 `Common/`에 있다([doc/02-architecture.md](doc/02-architecture.md)). 탭 2의 접미사 목록은 `%AppData%\folder-manage\settings.json`에 저장된다(앱의 첫 저장 설정). 탭 3 이후는 사용자가 설명하기 전까지 만들지 않고, 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전까지는 새 기능의 소스 코드(.cs, .xaml 등)를 만들지 않는다. 탭 2의 남은 세부 확인 사항은 [doc/05-open-decisions.md](doc/05-open-decisions.md) "탭 2 남은 세부 항목"이다.
 
-**탭 1(폴더 만들기) v1(MVP) 구현 완료.** [doc/01-overview.md](doc/01-overview.md)~[doc/05-open-decisions.md](doc/05-open-decisions.md) 계획대로 상위 폴더 선택, 접두사/접미사, 시작/종료/증가 단위/자리수 입력, 미리보기(신규/이미 존재/충돌 구분, 대량 생성 확인), 폴더 생성까지 동작한다. 이후 추가: 입력 기본값(접미사 `화`, 자리수 `1`), 접미사 기본값 자동 삭제, "자동 생성" 버튼(기존 숫자 폴더 사이의 빠진 번호 채우기). `FolderNameGenerator`/`FolderCreationService`/`MakeFolderViewModel`은 `tests/FolderManage.Tests`의 xUnit 테스트로 검증했고, 실제 앱을 실행해 골든 패스(생성)와 스킵/충돌/유효성 오류 케이스를 확인했다.
+**탭 1(폴더 만들기) v1(MVP) 구현 완료.** (탭 2도 같은 방식으로 xUnit 테스트와 실제 앱 실행으로 확인했다: 그룹 읽기 → 미리보기 → 이름 변경 → 되돌리기.) [doc/01-overview.md](doc/01-overview.md)~[doc/05-open-decisions.md](doc/05-open-decisions.md) 계획대로 상위 폴더 선택, 접두사/접미사, 시작/종료/증가 단위/자리수 입력, 미리보기(신규/이미 존재/충돌 구분, 대량 생성 확인), 폴더 생성까지 동작한다. 이후 추가: 입력 기본값(접미사 `화`, 자리수 `1`), 접미사 기본값 자동 삭제, "자동 생성" 버튼(기존 숫자 폴더 사이의 빠진 번호 채우기). `FolderNameGenerator`/`FolderCreationService`/`MakeFolderViewModel`은 `tests/FolderManage.Tests`의 xUnit 테스트로 검증했고, 실제 앱을 실행해 골든 패스(생성)와 스킵/충돌/유효성 오류 케이스를 확인했다.
 
 ## 작업 원칙
 

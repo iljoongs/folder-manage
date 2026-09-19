@@ -1,4 +1,4 @@
-namespace FolderManage.Models;
+namespace FolderManage.Features.MakeFolder;
 
 public sealed class FolderSequenceInput
 {

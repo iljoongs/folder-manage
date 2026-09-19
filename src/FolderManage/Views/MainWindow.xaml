@@ -3,14 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:FolderManage.Views"
+        xmlns:makeFolder="clr-namespace:FolderManage.Features.MakeFolder"
+        xmlns:imageRename="clr-namespace:FolderManage.Features.ImageRename"
         mc:Ignorable="d"
-        Title="folder-manage" Height="560" Width="640"
-        MinHeight="480" MinWidth="520"
+        Title="folder-manage" Height="700" Width="720"
+        MinHeight="560" MinWidth="600"
         Icon="/Assets/AppIcon.ico">
     <TabControl Margin="4">
         <TabItem Header="폴더 만들기">
-            <views:MakeFolderTabView Margin="12" DataContext="{Binding MakeFolder}" />
+            <makeFolder:MakeFolderTabView Margin="12" DataContext="{Binding MakeFolder}" />
+        </TabItem>
+        <TabItem Header="이미지 파일 이름 변경">
+            <imageRename:ImageRenameTabView Margin="12" DataContext="{Binding ImageRename}" />
         </TabItem>
     </TabControl>
 </Window>

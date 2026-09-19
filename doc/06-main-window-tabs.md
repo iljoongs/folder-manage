@@ -1,6 +1,6 @@
 # 06. 메인 윈도우와 탭 구조
 
-> **상태: 탭 셸 개편 완료, 탭 2는 계획 단계.** 메인 윈도우는 `TabControl` 셸이고 폴더 만들기가 탭 1이다(2026-09-19). 탭은 지금 탭 1 하나뿐이며, 탭 2 등 새 기능은 사용자가 명시적으로 구현을 지시하기 전까지 코드를 만들지 않는다.
+> **상태: 탭 셸 개편(2026-09-19)과 탭 2 구현(2026-09-20) 완료.** 메인 윈도우는 `TabControl` 셸이고 탭은 두 개다(폴더 만들기, 이미지 파일 이름 변경). 탭 3 이후는 사용자가 설명하기 전까지 만들지 않으며, 새 기능은 사용자가 명시적으로 구현을 지시하기 전까지 코드를 만들지 않는다.
 
 ## 개요
 
@@ -11,10 +11,10 @@
 | 순서 | 탭 이름 | 기능 | 상세 문서 |
 |---|---|---|---|
 | 1 | 폴더 만들기 | 기존 make-folder 기능(앱의 이전 이름): 상위 폴더를 선택해 연속 번호 폴더를 만들고, 빠진 번호를 자동으로 채운다 | [01-overview.md](01-overview.md) "탭 1", [03-folder-naming-spec.md](03-folder-naming-spec.md), [04-ui-flow.md](04-ui-flow.md) |
-| 2 | 이미지 파일 이름 변경 | 폴더와 파일이 함께 있는 폴더에서, (확장자·`.debug`/`.debug-result` 접미사를 뺀) 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾼다 | [07-image-rename-spec.md](07-image-rename-spec.md) |
+| 2 | 이미지 파일 이름 변경 | 폴더와 파일이 함께 있는 폴더에서, (확장자·`.debug`/`.debug-result` 접미사를 뺀) 공통 이름이 같은 폴더·파일들의 이름을 그룹 하나씩 함께 바꾸고, 되돌릴 수 있다 | [07-image-rename-spec.md](07-image-rename-spec.md) |
 | 3 이후 | (미정) | 사용자가 설명하면 이 표에 추가한다 | (기능 설명 후 작성) |
 
-탭 이름과 순서(1, 2)는 사용자가 정했다. 탭 2의 규칙은 사용자 답변으로 확정했고([07-image-rename-spec.md](07-image-rename-spec.md)), 남은 세부는 [05-open-decisions.md](05-open-decisions.md)의 "탭 2 남은 세부 항목"에 있다.
+탭 이름과 순서(1, 2)는 사용자가 정했다. 탭 2의 규칙은 사용자 답변으로 확정해 구현했고([07-image-rename-spec.md](07-image-rename-spec.md)), 답변이 없어 제안값으로 구현한 세부는 [05-open-decisions.md](05-open-decisions.md)의 "탭 2 남은 세부 항목"에 있다.
 
 ## 메인 윈도우(셸)의 역할
 
@@ -71,12 +71,19 @@
 | `App.xaml.cs` — `MainViewModel` 조립 | `DialogService` → `MakeFolderViewModel` → `MainWindowViewModel` → `MainWindow` 순서로 조립 |
 | `tests/.../MainViewModelTests.cs` | `MakeFolderViewModelTests.cs`. 나머지 서비스 테스트는 그대로 |
 
-탭은 XAML에 고정으로 적는다(사용자가 탭을 추가·삭제·순서 변경하지 않는다는 [05-open-decisions.md](05-open-decisions.md)의 제안대로). 탭 상태 유지(공통 규칙 2)는 탭 콘텐츠가 `TabItem` 안에 그대로 있고 ViewModel이 셸에 붙어 있어서 지켜진다. 폴더 구조는 여전히 계층별(Models/Services/ViewModels/Views)이다.
+탭은 XAML에 고정으로 적는다(사용자가 탭을 추가·삭제·순서 변경하지 않는다는 [05-open-decisions.md](05-open-decisions.md)의 제안대로).
 
-### 아직 안 한 것 (미구현 — 이름은 모두 가칭)
+### 탭 2 구현과 코드 폴더 정리 (완료, 2026-09-20)
 
-| 항목 | 방향 |
-|---|---|
-| 탭 2 UI/로직 | `Views/ImageRenameTabView.xaml`(UserControl)과 `ImageRenameViewModel`, 이름 그룹 판정/이름 변경 서비스를 새로 만든다 → [07-image-rename-spec.md](07-image-rename-spec.md). 셸의 `TabControl`에 `TabItem`을 추가하고 `MainWindowViewModel`에 탭 2 ViewModel을 더한다 |
-| `Models/`, `Services/` (계층별 폴더) | 탭이 2개가 되면 기능(탭)별 폴더로 나눌지 결정한다 — [05-open-decisions.md](05-open-decisions.md) 참고 |
-| 폴더/파일 이름 검증(금지 문자 등, 현재 `FolderNameGenerator.Validate` 안에 있음) | 탭 1과 탭 2가 함께 쓰므로 공용 서비스로 뽑는 것을 제안 — [02-architecture.md](02-architecture.md) |
+- **탭 2**: `Features/ImageRename`(모델, `NameGroupBuilder`/`RenamePlanner`/`RenameService`/`SuffixRules`, `JsonSuffixSettingsStore`, `ImageRenameViewModel`, `ImageRenameTabView`)을 만들고 셸에 두 번째 `TabItem`으로 붙였다. `MainWindowViewModel`은 `MakeFolder`와 `ImageRename` 두 탭 ViewModel을 들고 있다. 구성은 [02-architecture.md](02-architecture.md) "탭 2 구성", 규칙은 [07-image-rename-spec.md](07-image-rename-spec.md).
+- **코드 폴더 구조**: 계층별(Models/Services/ViewModels/Views)에서 기능(탭)별로 바꿨다. 탭 1 파일은 `Features/MakeFolder/`로, `IDialogService`/`DialogService`는 `Common/`으로 옮겼다(`git mv`로 이력 유지, 네임스페이스는 폴더와 같게 변경). 탭 셸(`MainWindow`, `MainWindowViewModel`)만 `Views/`, `ViewModels/`에 남았다.
+- **이름 검증 공용화**: 금지 문자 검사와 새 이름 검증(빈 이름, 끝의 `.`/공백, 예약 이름)을 `Common/FileNameRules`로 뽑았다. 탭 1의 접두사/접미사 검사(`FolderNameGenerator.Validate`)도 이것을 쓰며 동작과 메시지는 그대로다.
+- **창 크기**: 탭 2 화면(그룹 목록 + 미리보기 목록)이 들어가도록 640×560(최소 520×480)에서 720×700(최소 600×560)으로 키웠다.
+- **검증**: 테스트 140개 통과(기존 51 + 탭 2·공용 89). 실제 앱에서 임시 폴더로 그룹 읽기 → 그룹 선택(새 이름 자동 채움) → 미리보기 → 이름 변경(폴더 1 + 파일 3) → 되돌리기를 UI Automation으로 실행해 디스크의 이름이 예상대로 바뀌고 돌아오는 것을 확인했다.
+
+탭 상태 유지 규칙(공통 규칙 2)은 탭 콘텐츠가 `TabItem` 안에 그대로 있고 ViewModel이 셸에 붙어 있어서 두 탭 모두 지켜진다.
+
+### 아직 안 한 것
+
+- 탭 3 이후(사용자 설명 대기).
+- 탭 1 개선 후보 A(상위 폴더 존재 검사), B(실패 항목 표시) — [05-open-decisions.md](05-open-decisions.md).

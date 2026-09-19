@@ -1,8 +1,7 @@
-using System.IO;
+using FolderManage.Common;
 using System.Text.RegularExpressions;
-using FolderManage.Models;
 
-namespace FolderManage.Services;
+namespace FolderManage.Features.MakeFolder;
 
 /// <summary>
 /// 폴더 이름 생성 규칙(doc/03-folder-naming-spec.md)을 구현하는 순수 로직.
@@ -40,11 +39,10 @@ public static class FolderNameGenerator
             return FolderSequenceValidationResult.Failure("자리수는 1 이상이어야 합니다.");
         }
 
-        var invalidChars = Path.GetInvalidFileNameChars();
-        if (input.Prefix.IndexOfAny(invalidChars) >= 0 || input.Suffix.IndexOfAny(invalidChars) >= 0)
+        if (FileNameRules.ContainsInvalidChars(input.Prefix) || FileNameRules.ContainsInvalidChars(input.Suffix))
         {
             return FolderSequenceValidationResult.Failure(
-                "접두사/접미사에 폴더 이름으로 사용할 수 없는 문자가 포함되어 있습니다: \\ / : * ? \" < > |");
+                $"접두사/접미사에 폴더 이름으로 사용할 수 없는 문자가 포함되어 있습니다: {FileNameRules.InvalidCharsDisplay}");
         }
 
         var count = ((long)end - start) / step + 1;
