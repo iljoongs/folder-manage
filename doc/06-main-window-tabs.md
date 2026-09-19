@@ -1,6 +1,6 @@
 # 06. 메인 윈도우와 탭 구조
 
-> **상태: 계획 단계 (코드 미변경).** 현재 코드는 메인 윈도우 하나에 폴더 만들기 기능만 들어 있는 상태다. 이 문서는 그것을 탭 구조로 바꾸기 위한 계획이며, 사용자가 명시적으로 구현을 지시하기 전까지는 코드를 바꾸지 않는다.
+> **상태: 탭 셸 개편 완료, 탭 2는 계획 단계.** 메인 윈도우는 `TabControl` 셸이고 폴더 만들기가 탭 1이다(2026-09-19). 탭은 지금 탭 1 하나뿐이며, 탭 2 등 새 기능은 사용자가 명시적으로 구현을 지시하기 전까지 코드를 만들지 않는다.
 
 ## 개요
 
@@ -52,22 +52,31 @@
 | GitHub 저장소 | `iljoongs/make-folder` | `iljoongs/folder-manage` (`origin` 연결) | 완료 |
 | 로컬 작업 폴더 | `e:\code\make-folder` | `e:\code\folder-manage` | 완료 (사용자가 직접 변경, 2026-09-19. 이후 새 세션에서 `bin/obj` 재생성, 빌드·테스트 51개 통과 확인) |
 
-파일 이동은 `git mv`로 해서 이력을 유지했다. **작업 순서**: ① 앱 이름 변경(완료) → ② 폴더 구조/탭 셸 개편(아래) → ③ 탭 2 구현. 각 단계를 따로 커밋해서, 문제가 생기면 어느 단계 때문인지 바로 알 수 있게 한다.
+파일 이동은 `git mv`로 해서 이력을 유지했다. **작업 순서**: ① 앱 이름 변경(완료) → ② 탭 셸 개편(완료, 아래 "구현 현황") → ③ 탭 2 구현. 각 단계를 따로 커밋해서, 문제가 생기면 어느 단계 때문인지 바로 알 수 있게 한다.
 
 ## 로컬 폴더 이름 변경 후 후속 작업 (완료, 2026-09-19)
 
 새 세션에서 `git status`(깨끗함)와 `git remote -v`(`origin` = `https://github.com/iljoongs/folder-manage.git`)를 확인했고, 이전 경로가 남은 `bin/obj`를 지운 뒤 `dotnet build`(경고·오류 0)와 `dotnet test`(51개 통과)를 확인했다. "로컬 폴더는 아직 `make-folder`"라고 적었던 문서 표기도 모두 현재 상태로 고쳤다. 새 세션에는 이전 대화와 프로젝트 메모리(경로별로 저장됨)가 이어지지 않으므로, 필요한 작업 원칙은 [CLAUDE.md](../CLAUDE.md)의 "작업 원칙"에 들어 있다.
 
-## 구현 계획 (미구현 — 이름은 모두 가칭)
+## 구현 현황
 
-현재 코드에서 탭 구조로 옮길 때의 변경 방향이다. 실제 구현 시점에 [05-open-decisions.md](05-open-decisions.md)의 결정을 반영해 다시 확인한다.
+### 탭 셸 개편 (완료, 2026-09-19)
 
-| 현재 | 변경 방향 |
+동작은 그대로 두고 구조만 바꿨다. 기존 테스트 51개가 그대로 통과하고, 실행해서 탭 1 화면(입력 기본값 포함)을 확인했다. 파일 이동은 `git mv`로 이력을 유지했다.
+
+| 이전 | 현재 |
 |---|---|
-| `Views/MainWindow.xaml` — 폴더 만들기 UI가 창 전체를 차지 | 탭을 담는 셸(TabControl)로 교체. 기존 UI는 `Views/MakeFolderTabView.xaml`(UserControl)로 옮긴다. 접미사 입력란의 기본값 자동 삭제 동작([04-ui-flow.md](04-ui-flow.md))도 함께 옮긴다 |
-| `ViewModels/MainViewModel.cs` — 폴더 만들기 로직 | `MakeFolderViewModel`로 이름을 바꾼다. 메인 윈도우용 ViewModel(`MainWindowViewModel`)은 탭 ViewModel 목록을 들고 있는 최소한의 역할만 한다 |
-| (없음) | 탭 2용으로 `Views/ImageRenameTabView.xaml`(UserControl)과 `ImageRenameViewModel`(가칭), 이름 그룹 판정/이름 변경 서비스를 새로 만든다 → [07-image-rename-spec.md](07-image-rename-spec.md) |
-| `App.xaml.cs` — `MainViewModel`, `DialogService` 조립 | 각 탭 ViewModel과 공용 서비스(`IDialogService` 등)를 조립해 메인 윈도우에 넘긴다 |
-| `tests/FolderManage.Tests/MainViewModelTests.cs` | 이름 변경을 따라간다. 나머지 서비스 테스트는 그대로 |
-| `Models/`, `Services/` (계층별 폴더) | 탭이 2개가 되므로 기능(탭)별 폴더로 나눌지 결정한다 — [05-open-decisions.md](05-open-decisions.md) 참고 |
+| `Views/MainWindow.xaml` — 폴더 만들기 UI가 창 전체를 차지 | `MainWindow.xaml`은 `TabControl` 셸(탭 하나: "폴더 만들기"). 기존 UI는 `Views/MakeFolderTabView.xaml`(UserControl)로 옮겼고 접미사 입력란의 기본값 자동 삭제 동작([04-ui-flow.md](04-ui-flow.md))도 그 code-behind로 함께 옮겼다 |
+| `ViewModels/MainViewModel.cs` | `MakeFolderViewModel`로 이름을 바꿨다. 새 `MainWindowViewModel`은 탭 ViewModel(`MakeFolder`)을 들고 있는 최소한의 역할만 한다 |
+| `App.xaml.cs` — `MainViewModel` 조립 | `DialogService` → `MakeFolderViewModel` → `MainWindowViewModel` → `MainWindow` 순서로 조립 |
+| `tests/.../MainViewModelTests.cs` | `MakeFolderViewModelTests.cs`. 나머지 서비스 테스트는 그대로 |
+
+탭은 XAML에 고정으로 적는다(사용자가 탭을 추가·삭제·순서 변경하지 않는다는 [05-open-decisions.md](05-open-decisions.md)의 제안대로). 탭 상태 유지(공통 규칙 2)는 탭 콘텐츠가 `TabItem` 안에 그대로 있고 ViewModel이 셸에 붙어 있어서 지켜진다. 폴더 구조는 여전히 계층별(Models/Services/ViewModels/Views)이다.
+
+### 아직 안 한 것 (미구현 — 이름은 모두 가칭)
+
+| 항목 | 방향 |
+|---|---|
+| 탭 2 UI/로직 | `Views/ImageRenameTabView.xaml`(UserControl)과 `ImageRenameViewModel`, 이름 그룹 판정/이름 변경 서비스를 새로 만든다 → [07-image-rename-spec.md](07-image-rename-spec.md). 셸의 `TabControl`에 `TabItem`을 추가하고 `MainWindowViewModel`에 탭 2 ViewModel을 더한다 |
+| `Models/`, `Services/` (계층별 폴더) | 탭이 2개가 되면 기능(탭)별 폴더로 나눌지 결정한다 — [05-open-decisions.md](05-open-decisions.md) 참고 |
 | 폴더/파일 이름 검증(금지 문자 등, 현재 `FolderNameGenerator.Validate` 안에 있음) | 탭 1과 탭 2가 함께 쓰므로 공용 서비스로 뽑는 것을 제안 — [02-architecture.md](02-architecture.md) |

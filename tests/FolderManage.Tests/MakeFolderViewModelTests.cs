@@ -3,11 +3,11 @@ using FolderManage.ViewModels;
 
 namespace FolderManage.Tests;
 
-public class MainViewModelTests : IDisposable
+public class MakeFolderViewModelTests : IDisposable
 {
     private readonly string _tempRoot;
 
-    public MainViewModelTests()
+    public MakeFolderViewModelTests()
     {
         _tempRoot = Path.Combine(Path.GetTempPath(), "FolderManageVmTests_" + Guid.NewGuid());
         Directory.CreateDirectory(_tempRoot);
@@ -40,9 +40,9 @@ public class MainViewModelTests : IDisposable
         }
     }
 
-    private MainViewModel CreateViewModel(FakeDialogService? dialog = null)
+    private MakeFolderViewModel CreateViewModel(FakeDialogService? dialog = null)
     {
-        return new MainViewModel(dialog ?? new FakeDialogService())
+        return new MakeFolderViewModel(dialog ?? new FakeDialogService())
         {
             ParentFolderPath = _tempRoot,
         };
@@ -62,7 +62,7 @@ public class MainViewModelTests : IDisposable
     [Fact]
     public void Defaults_DigitCountIsOne_AndSuffixIsHwa()
     {
-        var viewModel = new MainViewModel(new FakeDialogService());
+        var viewModel = new MakeFolderViewModel(new FakeDialogService());
 
         Assert.Equal("1", viewModel.DigitCountText);
         Assert.Equal("화", viewModel.Suffix);
@@ -188,7 +188,7 @@ public class MainViewModelTests : IDisposable
     [Fact]
     public void AutoCreate_NoParentFolder_ShowsError()
     {
-        var viewModel = new MainViewModel(new FakeDialogService());
+        var viewModel = new MakeFolderViewModel(new FakeDialogService());
 
         viewModel.AutoCreateCommand.Execute(null);
 
@@ -198,7 +198,7 @@ public class MainViewModelTests : IDisposable
     [Fact]
     public void AutoCreate_ParentFolderDoesNotExist_ShowsError()
     {
-        var viewModel = new MainViewModel(new FakeDialogService())
+        var viewModel = new MakeFolderViewModel(new FakeDialogService())
         {
             ParentFolderPath = Path.Combine(_tempRoot, "missing"),
         };

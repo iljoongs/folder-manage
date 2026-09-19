@@ -1,0 +1,99 @@
+<UserControl x:Class="FolderManage.Views.MakeFolderTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 상위 폴더 선택 -->
+        <Grid Grid.Row="0" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="상위 폴더" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Grid.Column="1" Text="{Binding ParentFolderPath, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
+            <Button Grid.Column="2" Content="찾아보기..." Margin="8,0,0,0" Padding="10,4"
+                    Command="{Binding BrowseFolderCommand}" />
+        </Grid>
+
+        <!-- 접두사 / 접미사 -->
+        <Grid Grid.Row="1" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="접두사" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Grid.Column="1" Text="{Binding Prefix, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
+            <TextBlock Grid.Column="2" Text="접미사" VerticalAlignment="Center" Margin="16,0,8,0" />
+            <TextBox x:Name="SuffixTextBox" Grid.Column="3"
+                     Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center"
+                     PreviewMouseLeftButtonDown="SuffixTextBox_PreviewMouseLeftButtonDown"
+                     GotKeyboardFocus="SuffixTextBox_GotKeyboardFocus"
+                     TextChanged="SuffixTextBox_TextChanged" />
+        </Grid>
+
+        <!-- 시작 / 종료 / 증가 단위 / 자리수 -->
+        <Grid Grid.Row="2" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="시작 번호" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Grid.Column="1" Text="{Binding StartText, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
+            <TextBlock Grid.Column="2" Text="종료 번호" VerticalAlignment="Center" Margin="16,0,8,0" />
+            <TextBox Grid.Column="3" Text="{Binding EndText, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
+            <TextBlock Grid.Column="4" Text="증가 단위" VerticalAlignment="Center" Margin="16,0,8,0" />
+            <TextBox Grid.Column="5" Text="{Binding StepText, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
+            <TextBlock Grid.Column="6" Text="자리수" VerticalAlignment="Center" Margin="16,0,8,0" />
+            <TextBox Grid.Column="7" Text="{Binding DigitCountText, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
+        </Grid>
+
+        <!-- 실행 버튼 -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,8">
+            <Button Content="자동 생성" Padding="14,6" Margin="0,0,8,0" Command="{Binding AutoCreateCommand}"
+                    ToolTip="상위 폴더에서 접두사·접미사 형식의 숫자 폴더를 찾아, 가장 작은 번호와 가장 큰 번호 사이에서 빠진 폴더를 바로 만듭니다." />
+            <Button Content="미리보기" Padding="14,6" Margin="0,0,8,0" Command="{Binding PreviewCommand}" />
+            <Button Content="폴더 생성" Padding="14,6" Command="{Binding CreateCommand}" />
+        </StackPanel>
+
+        <!-- 미리보기 목록 -->
+        <DataGrid Grid.Row="4" ItemsSource="{Binding PreviewItems}" AutoGenerateColumns="False"
+                  IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                  GridLinesVisibility="Horizontal" HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="폴더 이름" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="상태" Binding="{Binding StatusText}" Width="140" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- 상태 메시지 -->
+        <TextBlock Grid.Row="5" Text="{Binding StatusMessage}" Margin="0,8,0,0" TextWrapping="Wrap" />
+    </Grid>
+</UserControl>

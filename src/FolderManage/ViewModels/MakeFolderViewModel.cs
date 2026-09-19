@@ -7,7 +7,7 @@ using FolderManage.Services;
 
 namespace FolderManage.ViewModels;
 
-public partial class MainViewModel : ObservableObject
+public partial class MakeFolderViewModel : ObservableObject
 {
     public const string DefaultSuffix = "화";
 
@@ -18,12 +18,12 @@ public partial class MainViewModel : ObservableObject
     private IReadOnlyList<FolderPreviewItem> _currentItems = Array.Empty<FolderPreviewItem>();
     private string _currentParentFolderPath = string.Empty;
 
-    public MainViewModel()
+    public MakeFolderViewModel()
         : this(new DialogService())
     {
     }
 
-    public MainViewModel(IDialogService dialogService)
+    public MakeFolderViewModel(IDialogService dialogService)
     {
         _dialogService = dialogService;
     }

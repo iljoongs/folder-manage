@@ -12,8 +12,8 @@ public partial class App : Application
         base.OnStartup(e);
 
         IDialogService dialogService = new DialogService();
-        var mainViewModel = new MainViewModel(dialogService);
-        var mainWindow = new MainWindow(mainViewModel);
+        var makeFolderViewModel = new MakeFolderViewModel(dialogService);
+        var mainWindow = new MainWindow(new MainWindowViewModel(makeFolderViewModel));
 
         mainWindow.Show();
     }
