@@ -38,7 +38,7 @@
 현재:
 
 ```
-folder-manage/                 # (로컬 폴더 이름은 아직 make-folder)
+folder-manage/
 ├── CLAUDE.md
 ├── folder-manage.sln
 ├── .gitignore
@@ -53,7 +53,7 @@ folder-manage/                 # (로컬 폴더 이름은 아직 make-folder)
     └── FolderManage.Tests/    # xUnit 단위 테스트
 ```
 
-탭이 늘어나면 Models/Services/ViewModels/Views를 기능(탭)별 폴더로 나눌지는 [05-open-decisions.md](05-open-decisions.md)의 미결정 항목이다. 앱 이름은 `folder-manage`(코드 표기 `FolderManage`)이고 위 트리는 이미 새 이름으로 바뀐 상태다(로컬 폴더 이름만 사용자가 바꿀 예정) → [06-main-window-tabs.md](06-main-window-tabs.md) "앱 이름 변경".
+탭이 늘어나면 Models/Services/ViewModels/Views를 기능(탭)별 폴더로 나눌지는 [05-open-decisions.md](05-open-decisions.md)의 미결정 항목이다. 앱 이름은 `folder-manage`(코드 표기 `FolderManage`)이고 위 트리는 로컬 폴더까지 모두 새 이름으로 바뀐 상태다 → [06-main-window-tabs.md](06-main-window-tabs.md) "앱 이름 변경".
 
 ## 테스트 가능성
 

@@ -2,7 +2,7 @@
 
 이 문서는 프로젝트의 메인 지시서입니다. 작업 시작 전 아래 보조 지시서를 모두 읽고 진행하세요.
 
-> **앱 이름은 `folder-manage`로 정했다**(여러 기능을 탭으로 담는 앱이 되었기 때문, [doc/05-open-decisions.md](doc/05-open-decisions.md)). GitHub 저장소, 솔루션(`folder-manage.sln`), 프로젝트(`FolderManage`), 실행 파일(`FolderManage.exe`), 아이콘 원본(`folder-manage.png`), 창 제목은 이미 새 이름으로 바뀌었다. **로컬 작업 폴더만 아직 `make-folder`**이며 사용자가 직접 바꿀 예정이다(바꾸면 Claude Code 세션 경로가 달라지므로 새 세션으로 시작) → [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) "앱 이름 변경".
+> **앱 이름은 `folder-manage`로 정했다**(여러 기능을 탭으로 담는 앱이 되었기 때문, [doc/05-open-decisions.md](doc/05-open-decisions.md)). GitHub 저장소, 로컬 작업 폴더(`e:\code\folder-manage`), 솔루션(`folder-manage.sln`), 프로젝트(`FolderManage`), 실행 파일(`FolderManage.exe`), 아이콘 원본(`folder-manage.png`), 창 제목이 모두 새 이름으로 바뀌었다(이름 변경 작업 전부 완료) → [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) "앱 이름 변경".
 
 이 문서의 작업 원칙은 상위 폴더의 형제 프로젝트(`image-readers`, `text-readers`, `english-training`, `video-vault`)들이 공통으로 따르는 지시서 구조에서 가져왔습니다.
 
@@ -18,7 +18,7 @@
 ## 폴더 구조
 
 ```
-folder-manage/            # (로컬 폴더 이름은 아직 make-folder)
+folder-manage/
 ├── CLAUDE.md              # 메인 지시서 (이 파일)
 ├── folder-manage.sln
 ├── .gitignore
@@ -91,4 +91,4 @@ dotnet run --project src/FolderManage     # 앱 실행
 6. 사용자 명령으로 파일이 수정되고 작업이 성공적으로 끝나면, 별도 요청/확인 없이 git commit(커밋 메시지는 영어로 직접 작성)과 push까지 수행한다.
 7. 명령 수행 후, 이번 작업에서 참조하거나 수정한 보조 지시서(doc/ 폴더) 목록을 사용자에게 알려준다.
 8. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전에는 새 기능 코드를 만들지 않고 계획(문서)부터 정리한다. 이름 변경처럼 범위가 정해진 수정만 지시받은 경우에는 그 범위 안에서만 코드를 바꾼다.
-9. GitHub 저장소나 로컬 작업 폴더의 이름 변경처럼 프로젝트 밖에 영향을 주는 작업은 사용자가 직접 하거나 명시적으로 지시한 경우에만 한다.
+9. GitHub 저장소나 로컬 작업 폴더의 이름 변경처럼(둘 다 `folder-manage`로 이미 완료) 프로젝트 밖에 영향을 주는 작업은 사용자가 직접 하거나 명시적으로 지시한 경우에만 한다.

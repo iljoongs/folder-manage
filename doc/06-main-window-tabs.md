@@ -35,7 +35,7 @@
 3. 그 탭의 보조 지시서를 `doc/`에 작성하고 [CLAUDE.md](../CLAUDE.md) 문서 목록에 추가한다.
 4. 사용자가 구현을 지시하면 View/ViewModel/Service와 테스트를 만든다.
 
-## 앱 이름 변경 (코드 완료 — 로컬 폴더 이름만 남음)
+## 앱 이름 변경 (완료)
 
 앱 이름을 **`folder-manage`** 로 바꿨다([05-open-decisions.md](05-open-decisions.md)). 이름만 바꾼 작업이라 동작은 그대로이고, 기존 테스트 51개가 그대로 통과하며 실행 파일·창 제목·아이콘도 실제로 확인했다(2026-09-19).
 
@@ -50,18 +50,13 @@
 | 아이콘 원본(루트) | `make-folder.png` | `folder-manage.png` (`Assets/AppIcon.ico`는 이름 그대로) | 완료 |
 | 창 제목 | `MakeFolder` | `folder-manage` | 완료 |
 | GitHub 저장소 | `iljoongs/make-folder` | `iljoongs/folder-manage` (`origin` 연결) | 완료 |
-| 로컬 작업 폴더 | `e:\code\make-folder` | `e:\code\folder-manage` | **사용자가 직접** 변경. Claude Code 세션 경로가 바뀌므로 변경 후 새 세션으로 시작 |
+| 로컬 작업 폴더 | `e:\code\make-folder` | `e:\code\folder-manage` | 완료 (사용자가 직접 변경, 2026-09-19. 이후 새 세션에서 `bin/obj` 재생성, 빌드·테스트 51개 통과 확인) |
 
 파일 이동은 `git mv`로 해서 이력을 유지했다. **작업 순서**: ① 앱 이름 변경(완료) → ② 폴더 구조/탭 셸 개편(아래) → ③ 탭 2 구현. 각 단계를 따로 커밋해서, 문제가 생기면 어느 단계 때문인지 바로 알 수 있게 한다.
 
-## 로컬 폴더 이름 변경 후 할 일
+## 로컬 폴더 이름 변경 후 후속 작업 (완료, 2026-09-19)
 
-사용자가 `e:\code\make-folder`를 `e:\code\folder-manage`로 바꾼 뒤(새 세션으로 시작) 이어서 할 일이다. 이 저장소의 지시서(`CLAUDE.md`, `doc/`)만 읽어도 이어서 작업할 수 있도록 적어 둔다.
-
-1. `git status`(깨끗한지)와 `git remote -v`(`origin`이 `https://github.com/iljoongs/folder-manage.git`인지)를 확인한다.
-2. 이전 경로가 남아 있는 빌드 캐시 때문에 문제가 생길 수 있으므로 `src/FolderManage`와 `tests/FolderManage.Tests`의 `bin/obj`를 지우고 `dotnet build`, `dotnet test`가 통과하는지 확인한다. `publish/`의 exe는 그대로 실행되지만 필요하면 [CLAUDE.md](../CLAUDE.md)의 명령으로 다시 만든다.
-3. 문서에서 "로컬 폴더는 아직 `make-folder`"라고 적은 곳을 현재 상태로 고친다: [CLAUDE.md](../CLAUDE.md) 맨 위 안내와 폴더 구조 주석, [02-architecture.md](02-architecture.md) 폴더 구조 주석, [05-open-decisions.md](05-open-decisions.md)의 "로컬 작업 폴더 이름" 행, 이 문서의 위 표와 제목.
-4. 새 세션에는 이전 대화와 프로젝트 메모리(경로별로 저장됨)가 이어지지 않는다. 필요한 작업 원칙은 [CLAUDE.md](../CLAUDE.md)의 "작업 원칙"에 모두 들어 있다.
+새 세션에서 `git status`(깨끗함)와 `git remote -v`(`origin` = `https://github.com/iljoongs/folder-manage.git`)를 확인했고, 이전 경로가 남은 `bin/obj`를 지운 뒤 `dotnet build`(경고·오류 0)와 `dotnet test`(51개 통과)를 확인했다. "로컬 폴더는 아직 `make-folder`"라고 적었던 문서 표기도 모두 현재 상태로 고쳤다. 새 세션에는 이전 대화와 프로젝트 메모리(경로별로 저장됨)가 이어지지 않으므로, 필요한 작업 원칙은 [CLAUDE.md](../CLAUDE.md)의 "작업 원칙"에 들어 있다.
 
 ## 구현 계획 (미구현 — 이름은 모두 가칭)
 
