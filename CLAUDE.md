@@ -2,7 +2,7 @@
 
 이 문서는 프로젝트의 메인 지시서입니다. 작업 시작 전 아래 보조 지시서를 모두 읽고 진행하세요.
 
-> **앱 이름은 `folder-manage`로 정했다**(여러 기능을 탭으로 담는 앱이 되었기 때문, [doc/05-open-decisions.md](doc/05-open-decisions.md)). 다만 **코드와 저장소는 아직 이전 이름 그대로**다 — 프로젝트 `MakeFolder`, 솔루션 `make-folder.sln`, 실행 파일 `MakeFolder.exe`, 아이콘 원본 `make-folder.png`, GitHub 저장소/로컬 폴더 `make-folder`. 이 문서의 폴더 구조·배포 명령 등은 코드의 실제 상태를 설명하므로 이전 이름으로 적혀 있고, 이름을 바꾸는 작업 때 함께 갱신한다 → [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) "앱 이름 변경 계획".
+> **앱 이름은 `folder-manage`로 정했다**(여러 기능을 탭으로 담는 앱이 되었기 때문, [doc/05-open-decisions.md](doc/05-open-decisions.md)). GitHub 저장소는 이미 `folder-manage`로 바뀌어 연결되어 있지만, **코드와 로컬 폴더는 아직 이전 이름 그대로**다 — 프로젝트 `MakeFolder`, 솔루션 `make-folder.sln`, 실행 파일 `MakeFolder.exe`, 아이콘 원본 `make-folder.png`, 로컬 폴더 `make-folder`. 이 문서의 폴더 구조·배포 명령 등은 코드의 실제 상태를 설명하므로 이전 이름으로 적혀 있고, 이름을 바꾸는 작업 때 함께 갱신한다 → [doc/06-main-window-tabs.md](doc/06-main-window-tabs.md) "앱 이름 변경 계획".
 
 이 문서의 작업 원칙은 상위 폴더의 형제 프로젝트(`image-readers`, `text-readers`, `english-training`, `video-vault`)들이 공통으로 따르는 지시서 구조에서 가져왔습니다.
 

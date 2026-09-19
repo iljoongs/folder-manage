@@ -50,7 +50,7 @@
 | 아이콘 원본(루트) | `make-folder.png` | `folder-manage.png` (`Assets/AppIcon.ico`는 이름 그대로) |
 | 창 제목 | `MakeFolder` | `folder-manage` |
 | 문서 표기 | [CLAUDE.md](../CLAUDE.md) 제목, doc/01~07의 `MakeFolder`/`make-folder` | 코드 변경과 같은 작업 단위로 갱신 |
-| GitHub 저장소 | `iljoongs/make-folder` | **사용자가 직접** 이름 변경. 그 뒤 `git remote set-url origin <새 URL>` (GitHub가 옛 URL을 자동으로 넘겨주지만 갱신을 권장) |
+| GitHub 저장소 | `iljoongs/make-folder` | **완료**: `iljoongs/folder-manage`로 이름이 바뀌었고 `origin`도 `https://github.com/iljoongs/folder-manage.git`로 연결했다 |
 | 로컬 작업 폴더 | `e:\code\make-folder` | **사용자가 직접** 이름 변경. Claude Code 세션 경로가 바뀌므로 변경 후 새 세션으로 시작 |
 
 파일 이동은 `git mv`로 해서 이력을 유지한다. **작업 순서 제안**: ① 앱 이름 변경 → ② 폴더 구조/탭 셸 개편(아래) → ③ 탭 2 구현. 각 단계를 따로 커밋해서, 문제가 생기면 어느 단계 때문인지 바로 알 수 있게 한다.
