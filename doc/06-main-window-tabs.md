@@ -1,0 +1,47 @@
+# 06. 메인 윈도우와 탭 구조
+
+> **상태: 계획 단계 (코드 미변경).** 현재 코드는 메인 윈도우 하나에 폴더 만들기 기능만 들어 있는 상태다. 이 문서는 그것을 탭 구조로 바꾸기 위한 계획이며, 사용자가 명시적으로 구현을 지시하기 전까지는 코드를 바꾸지 않는다.
+
+## 개요
+
+앱의 메인 윈도우를 **탭(TabControl)** 으로 구성한다. 탭은 **기능 단위**로 나눈다 — 한 탭은 하나의 기능을 맡는다. 지금까지 만든 make-folder(연속 번호 폴더 만들기)는 그중 **하나의 탭(탭 1)** 이 된다.
+
+## 탭 목록
+
+| 순서 | 탭 이름 | 기능 | 상세 문서 |
+|---|---|---|---|
+| 1 | 폴더 만들기 (임시 이름) | 상위 폴더를 선택해 연속 번호 폴더를 만들고, 빠진 번호를 자동으로 채운다 | [01-overview.md](01-overview.md) "탭 1", [03-folder-naming-spec.md](03-folder-naming-spec.md), [04-ui-flow.md](04-ui-flow.md) |
+| 2 이후 | (미정) | 사용자가 탭별 기능을 설명해 줄 예정 — 설명을 받은 뒤 이 표를 채운다 | (기능 설명 후 작성) |
+
+탭 이름과 순서는 [05-open-decisions.md](05-open-decisions.md)의 미결정 항목이다.
+
+## 메인 윈도우(셸)의 역할
+
+- 탭을 담는 틀이다. 창 제목, 아이콘, 창 크기/최소 크기 같은 앱 공통 요소만 맡고, 기능 로직은 갖지 않는다.
+- 각 탭의 내용은 그 탭 전용 View와 ViewModel이 책임진다.
+
+## 탭 공통 규칙
+
+1. **독립성**: 각 탭은 자기 View(UserControl) + ViewModel + 필요한 Model/Service를 갖고, 다른 탭을 직접 참조하지 않는다. 한 탭의 기능을 고쳐도 다른 탭에 영향이 없어야 한다.
+2. **상태 유지**: 탭을 전환했다 돌아와도 그 탭의 입력값과 결과(예: 폴더 만들기 탭의 입력란, 미리보기 목록, 상태 메시지)가 그대로 남아 있어야 한다.
+3. **MVVM 유지**: 탭 안에서도 View(XAML)와 로직(ViewModel/Service)을 분리한다 ([02-architecture.md](02-architecture.md), [CLAUDE.md](../CLAUDE.md) 작업 원칙 3).
+4. **문서는 탭별로**: 탭마다 그 기능의 상세 규칙을 다루는 보조 지시서를 `doc/`에 둔다. 위 탭 목록 표에서 링크하고, [CLAUDE.md](../CLAUDE.md)의 보조 지시서 목록에도 추가한다.
+
+## 새 탭을 추가하는 절차
+
+1. 사용자가 그 탭의 기능을 설명한다.
+2. 이 문서의 탭 목록 표를 갱신하고, [05-open-decisions.md](05-open-decisions.md)에 새로 생기는 미결정 항목을 적는다(임의로 확정하지 않는다).
+3. 그 탭의 보조 지시서를 `doc/`에 작성하고 [CLAUDE.md](../CLAUDE.md) 문서 목록에 추가한다.
+4. 사용자가 구현을 지시하면 View/ViewModel/Service와 테스트를 만든다.
+
+## 구현 계획 (미구현 — 이름은 모두 가칭)
+
+현재 코드에서 탭 구조로 옮길 때의 변경 방향이다. 실제 구현 시점에 [05-open-decisions.md](05-open-decisions.md)의 결정을 반영해 다시 확인한다.
+
+| 현재 | 변경 방향 |
+|---|---|
+| `Views/MainWindow.xaml` — 폴더 만들기 UI가 창 전체를 차지 | 탭을 담는 셸(TabControl)로 교체. 기존 UI는 `Views/MakeFolderTabView.xaml`(UserControl)로 옮긴다. 접미사 입력란의 기본값 자동 삭제 동작([04-ui-flow.md](04-ui-flow.md))도 함께 옮긴다 |
+| `ViewModels/MainViewModel.cs` — 폴더 만들기 로직 | `MakeFolderViewModel`로 이름을 바꾼다. 메인 윈도우용 ViewModel(`MainWindowViewModel`)은 탭 ViewModel 목록을 들고 있는 최소한의 역할만 한다 |
+| `App.xaml.cs` — `MainViewModel`, `DialogService` 조립 | 각 탭 ViewModel과 공용 서비스(`IDialogService` 등)를 조립해 메인 윈도우에 넘긴다 |
+| `tests/MakeFolder.Tests/MainViewModelTests.cs` | 이름 변경을 따라간다. 나머지 서비스 테스트는 그대로 |
+| `Models/`, `Services/` (계층별 폴더) | 탭이 늘어나면 기능(탭)별 폴더로 나눌지 결정한다 — [05-open-decisions.md](05-open-decisions.md) 참고 |
