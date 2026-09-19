@@ -33,7 +33,7 @@
 - **순수 로직 Service**: `NameGroupBuilder`(이름을 공통 이름/접미사/확장자로 나누고 그룹으로 묶음), `RenamePlanner`(새 이름 검증 + 변경 전 충돌 검사로 계획 생성), `SuffixRules`(추가할 파일/폴더 접미사 검사, 기본 접미사 목록 `.debug`·`.debug-result` / `_files`).
 - **파일 시스템 Service**: `RenameService`(폴더 읽기, 이름 변경 실행 — 시작 전 재검사와 그룹 단위 원복, 대소문자만 바꾸는 경우의 임시 이름, 되돌리기), `ISuffixSettingsStore` / `JsonSuffixSettingsStore`(파일·폴더 접미사 목록을 `%AppData%\folder-manage\settings.json`에 저장·읽기, 파일이 없거나 깨지면 기본 목록).
 - **ViewModel**: `ImageRenameViewModel`(대상 폴더, 접미사 목록, 그룹 목록/선택, 새 이름, 미리보기, "새로고침"/"미리보기"/"이름 변경"/"되돌리기"/접미사 "추가"·"삭제" 커맨드; 되돌리기 기록은 앱 실행 중에만 유지하는 스택), `NameGroupRowViewModel`, `RenamePreviewRowViewModel`(화면용 한글 텍스트).
-- **View**: `ImageRenameTabView.xaml`(UserControl). code-behind는 비어 있다. 목록의 숫자 인식 정렬은 `Common/NaturalStringComparer`(비교기)와 `Common/NaturalSortBehavior`(DataGrid 첨부 속성 `IsEnabled`, 열 머리글 클릭 정렬을 자연 정렬로 대체)를 쓴다. 기본 순서는 `NameGroupBuilder`가 같은 비교기로 정렬해서 만든다.
+- **View**: `ImageRenameTabView.xaml`(UserControl). code-behind는 비어 있다. 목록의 숫자 인식 정렬은 `Common/NaturalStringComparer`(비교기)와 `Common/NaturalSortBehavior`(DataGrid 첨부 속성 `IsEnabled`, 열 머리글 클릭 정렬을 자연 정렬로 대체)를 쓴다(탭 1의 미리보기 목록도 같다). 기본 순서는 `NameGroupBuilder`가 같은 비교기로 정렬해서 만든다.
 
 ## 진입점과 코드 규칙 (현재 코드가 따르는 것)
 
