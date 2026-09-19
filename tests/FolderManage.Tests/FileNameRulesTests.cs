@@ -44,7 +44,7 @@ public class SuffixRulesTests
     [Fact]
     public void Validate_AcceptsNewSuffix()
     {
-        Assert.Null(SuffixRules.Validate(".raw", new[] { ".debug" }));
+        Assert.Null(SuffixRules.ValidateFileSuffix(".raw", new[] { ".debug" }));
     }
 
     [Theory]
@@ -55,12 +55,35 @@ public class SuffixRulesTests
     [InlineData(".a*b")]
     public void Validate_RejectsBadSuffix(string suffix)
     {
-        Assert.NotNull(SuffixRules.Validate(suffix, Array.Empty<string>()));
+        Assert.NotNull(SuffixRules.ValidateFileSuffix(suffix, Array.Empty<string>()));
     }
 
     [Fact]
     public void Validate_RejectsDuplicateIgnoringCase()
     {
-        Assert.NotNull(SuffixRules.Validate(".DEBUG", new[] { ".debug" }));
+        Assert.NotNull(SuffixRules.ValidateFileSuffix(".DEBUG", new[] { ".debug" }));
+    }
+
+    [Fact]
+    public void ValidateFolderSuffix_AcceptsSuffixWithoutLeadingDot()
+    {
+        Assert.Null(SuffixRules.ValidateFolderSuffix("_files", Array.Empty<string>()));
+        Assert.Null(SuffixRules.ValidateFolderSuffix("-data", new[] { "_files" }));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("  ")]
+    [InlineData("_a/b")]
+    [InlineData("_a?")]
+    public void ValidateFolderSuffix_RejectsBadSuffix(string suffix)
+    {
+        Assert.NotNull(SuffixRules.ValidateFolderSuffix(suffix, Array.Empty<string>()));
+    }
+
+    [Fact]
+    public void ValidateFolderSuffix_RejectsDuplicateIgnoringCase()
+    {
+        Assert.NotNull(SuffixRules.ValidateFolderSuffix("_FILES", new[] { "_files" }));
     }
 }

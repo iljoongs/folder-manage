@@ -24,29 +24,46 @@ public class JsonSuffixSettingsStoreTests : IDisposable
     [Fact]
     public void Load_ReturnsDefaultsWhenFileDoesNotExist()
     {
-        var store = new JsonSuffixSettingsStore(SettingsPath);
+        var settings = new JsonSuffixSettingsStore(SettingsPath).Load();
 
-        Assert.Equal(new[] { ".debug", ".debug-result" }, store.Load());
+        Assert.Equal(new[] { ".debug", ".debug-result" }, settings.FileSuffixes);
+        Assert.Equal(new[] { "_files" }, settings.FolderSuffixes);
     }
 
     [Fact]
-    public void SaveThenLoad_RoundTripsAndCreatesFolder()
+    public void SaveThenLoad_RoundTripsBothListsAndCreatesFolder()
     {
         var store = new JsonSuffixSettingsStore(SettingsPath);
 
-        store.Save(new[] { ".raw", ".debug" });
+        store.Save(new SuffixSettings(new[] { ".raw", ".debug" }, new[] { "_files", "-data" }));
 
-        Assert.Equal(new[] { ".raw", ".debug" }, new JsonSuffixSettingsStore(SettingsPath).Load());
+        var loaded = new JsonSuffixSettingsStore(SettingsPath).Load();
+        Assert.Equal(new[] { ".raw", ".debug" }, loaded.FileSuffixes);
+        Assert.Equal(new[] { "_files", "-data" }, loaded.FolderSuffixes);
     }
 
     [Fact]
-    public void SaveThenLoad_KeepsAnEmptyListEmpty()
+    public void SaveThenLoad_KeepsEmptyListsEmpty()
     {
         var store = new JsonSuffixSettingsStore(SettingsPath);
 
-        store.Save(Array.Empty<string>());
+        store.Save(new SuffixSettings(Array.Empty<string>(), Array.Empty<string>()));
 
-        Assert.Empty(store.Load());
+        var loaded = store.Load();
+        Assert.Empty(loaded.FileSuffixes);
+        Assert.Empty(loaded.FolderSuffixes);
+    }
+
+    [Fact]
+    public void Load_UsesDefaultFolderSuffixesWhenFileHasOnlyFileSuffixes()
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath)!);
+        File.WriteAllText(SettingsPath, "{ \"Suffixes\": [\".raw\"] }");
+
+        var loaded = new JsonSuffixSettingsStore(SettingsPath).Load();
+
+        Assert.Equal(new[] { ".raw" }, loaded.FileSuffixes);
+        Assert.Equal(new[] { "_files" }, loaded.FolderSuffixes);
     }
 
     [Fact]
@@ -55,6 +72,9 @@ public class JsonSuffixSettingsStoreTests : IDisposable
         Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath)!);
         File.WriteAllText(SettingsPath, "{ not json");
 
-        Assert.Equal(new[] { ".debug", ".debug-result" }, new JsonSuffixSettingsStore(SettingsPath).Load());
+        var loaded = new JsonSuffixSettingsStore(SettingsPath).Load();
+
+        Assert.Equal(new[] { ".debug", ".debug-result" }, loaded.FileSuffixes);
+        Assert.Equal(new[] { "_files" }, loaded.FolderSuffixes);
     }
 }

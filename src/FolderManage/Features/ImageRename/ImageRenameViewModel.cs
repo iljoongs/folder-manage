@@ -25,9 +25,15 @@ public partial class ImageRenameViewModel : ObservableObject
         _dialogService = dialogService;
         _suffixStore = suffixStore;
 
-        foreach (var suffix in _suffixStore.Load())
+        var saved = _suffixStore.Load();
+        foreach (var suffix in saved.FileSuffixes)
         {
             Suffixes.Add(suffix);
+        }
+
+        foreach (var suffix in saved.FolderSuffixes)
+        {
+            FolderSuffixes.Add(suffix);
         }
     }
 
@@ -47,6 +53,12 @@ public partial class ImageRenameViewModel : ObservableObject
     private string? _selectedSuffix;
 
     [ObservableProperty]
+    private string _newFolderSuffixText = string.Empty;
+
+    [ObservableProperty]
+    private string? _selectedFolderSuffix;
+
+    [ObservableProperty]
     private string _statusMessage = string.Empty;
 
     [ObservableProperty]
@@ -61,7 +73,11 @@ public partial class ImageRenameViewModel : ObservableObject
 
     public ObservableCollection<RenamePreviewRowViewModel> PreviewItems { get; } = new();
 
+    /// <summary>파일 접미사 목록(확장자 앞, 예: .debug).</summary>
     public ObservableCollection<string> Suffixes { get; } = new();
+
+    /// <summary>폴더 접미사 목록(이름 끝, 예: _files).</summary>
+    public ObservableCollection<string> FolderSuffixes { get; } = new();
 
     partial void OnTargetFolderPathChanged(string value) => InvalidatePreview();
 
@@ -182,7 +198,7 @@ public partial class ImageRenameViewModel : ObservableObject
     private void AddSuffix()
     {
         var suffix = NewSuffixText.Trim();
-        var error = SuffixRules.Validate(suffix, Suffixes);
+        var error = SuffixRules.ValidateFileSuffix(suffix, Suffixes);
         if (error is not null)
         {
             StatusMessage = error;
@@ -208,13 +224,43 @@ public partial class ImageRenameViewModel : ObservableObject
         ApplySuffixChange($"접미사 '{suffix}'을(를) 삭제했습니다.");
     }
 
+    [RelayCommand]
+    private void AddFolderSuffix()
+    {
+        var suffix = NewFolderSuffixText.Trim();
+        var error = SuffixRules.ValidateFolderSuffix(suffix, FolderSuffixes);
+        if (error is not null)
+        {
+            StatusMessage = error;
+            return;
+        }
+
+        FolderSuffixes.Add(suffix);
+        NewFolderSuffixText = string.Empty;
+        ApplySuffixChange($"폴더 접미사 '{suffix}'을(를) 추가했습니다.");
+    }
+
+    [RelayCommand]
+    private void RemoveFolderSuffix()
+    {
+        if (SelectedFolderSuffix is null)
+        {
+            StatusMessage = "삭제할 폴더 접미사를 목록에서 선택하세요.";
+            return;
+        }
+
+        var suffix = SelectedFolderSuffix;
+        FolderSuffixes.Remove(suffix);
+        ApplySuffixChange($"폴더 접미사 '{suffix}'을(를) 삭제했습니다.");
+    }
+
     // 접미사 목록이 바뀌면 저장하고, 이미 읽은 폴더가 있으면 그룹을 다시 나눈다.
     private void ApplySuffixChange(string message)
     {
         string? saveError = null;
         try
         {
-            _suffixStore.Save(Suffixes.ToList());
+            _suffixStore.Save(CurrentSuffixSettings());
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
@@ -228,6 +274,8 @@ public partial class ImageRenameViewModel : ObservableObject
 
         StatusMessage = saveError is null ? message : $"{message} (설정을 저장하지 못했습니다: {saveError})";
     }
+
+    private SuffixSettings CurrentSuffixSettings() => new(Suffixes.ToList(), FolderSuffixes.ToList());
 
     private void LoadGroups(string folderPath, string? selectCommonName)
     {
@@ -246,7 +294,7 @@ public partial class ImageRenameViewModel : ObservableObject
             return;
         }
 
-        var groups = NameGroupBuilder.Build(entries, Suffixes.ToList());
+        var groups = NameGroupBuilder.Build(entries, CurrentSuffixSettings());
         _loadedFolderPath = folderPath;
 
         Groups.Clear();

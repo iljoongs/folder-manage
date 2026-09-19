@@ -4,7 +4,7 @@ namespace FolderManage.Tests;
 
 public class RenamePlannerTests
 {
-    private static readonly string[] DefaultSuffixes = { ".debug", ".debug-result" };
+    private static readonly SuffixSettings DefaultSuffixes = SuffixSettings.Default;
 
     private static NameGroup GroupOf(string commonName, params string[] names)
     {
@@ -113,5 +113,29 @@ public class RenamePlannerTests
         var plan = RenamePlanner.BuildPlan(group, "a.debug", names);
 
         Assert.False(plan.CanExecute);
+    }
+
+    [Fact]
+    public void BuildPlan_KeepsFolderSuffixOnTheFilesFolder()
+    {
+        var names = new[] { "001_files", "001.html" };
+        var group = GroupOf("001", names);
+
+        var plan = RenamePlanner.BuildPlan(group, "ch01", names);
+
+        Assert.True(plan.CanExecute);
+        Assert.Equal(new[] { "ch01_files", "ch01.html" }, plan.Items.Select(i => i.NewName));
+    }
+
+    [Fact]
+    public void BuildPlan_ExistingFilesFolderNameIsAConflict()
+    {
+        var names = new[] { "001_files", "001.html", "ch01_files" };
+        var group = GroupOf("001", "001_files", "001.html");
+
+        var plan = RenamePlanner.BuildPlan(group, "ch01", names);
+
+        Assert.False(plan.CanExecute);
+        Assert.Contains("ch01_files", plan.ErrorMessage);
     }
 }

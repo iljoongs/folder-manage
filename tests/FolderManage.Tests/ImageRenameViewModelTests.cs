@@ -22,15 +22,15 @@ public class ImageRenameViewModelTests : IDisposable
 
     private sealed class FakeSuffixStore : ISuffixSettingsStore
     {
-        public List<string> Saved { get; private set; } = new() { ".debug", ".debug-result" };
+        public SuffixSettings Saved { get; private set; } = SuffixSettings.Default;
 
         public int SaveCount { get; private set; }
 
-        public IReadOnlyList<string> Load() => Saved.ToList();
+        public SuffixSettings Load() => Saved;
 
-        public void Save(IReadOnlyList<string> suffixes)
+        public void Save(SuffixSettings settings)
         {
-            Saved = suffixes.ToList();
+            Saved = settings;
             SaveCount++;
         }
     }
@@ -40,7 +40,7 @@ public class ImageRenameViewModelTests : IDisposable
     private void MakeFile(string name) => File.WriteAllText(Path.Combine(_root, name), "x");
 
     private string[] NamesInRoot() =>
-        Directory.EnumerateFileSystemEntries(_root).Select(p => Path.GetFileName(p)!).OrderBy(n => n).ToArray();
+        Directory.EnumerateFileSystemEntries(_root).Select(p => Path.GetFileName(p)!).OrderBy(n => n, StringComparer.Ordinal).ToArray();
 
     private ImageRenameViewModel CreateViewModel(FakeSuffixStore? store = null)
     {
@@ -69,6 +69,7 @@ public class ImageRenameViewModelTests : IDisposable
         var viewModel = CreateViewModel();
 
         Assert.Equal(new[] { ".debug", ".debug-result" }, viewModel.Suffixes);
+        Assert.Equal(new[] { "_files" }, viewModel.FolderSuffixes);
     }
 
     [Fact]
@@ -267,7 +268,7 @@ public class ImageRenameViewModelTests : IDisposable
         viewModel.AddSuffixCommand.Execute(null);
 
         Assert.Contains(".raw", viewModel.Suffixes);
-        Assert.Contains(".raw", store.Saved);
+        Assert.Contains(".raw", store.Saved.FileSuffixes);
         Assert.Single(viewModel.Groups);
         Assert.Equal(string.Empty, viewModel.NewSuffixText);
     }
@@ -303,7 +304,7 @@ public class ImageRenameViewModelTests : IDisposable
         viewModel.RemoveSuffixCommand.Execute(null);
 
         Assert.DoesNotContain(".debug", viewModel.Suffixes);
-        Assert.DoesNotContain(".debug", store.Saved);
+        Assert.DoesNotContain(".debug", store.Saved.FileSuffixes);
         Assert.Equal(2, viewModel.Groups.Count);
     }
 
@@ -316,6 +317,89 @@ public class ImageRenameViewModelTests : IDisposable
 
         Assert.Contains("선택", viewModel.StatusMessage);
         Assert.Equal(2, viewModel.Suffixes.Count);
+    }
+
+    [Fact]
+    public void Refresh_GroupsFilesFolderWithItsFile()
+    {
+        MakeFolder("001_files");
+        MakeFile("001.html");
+        MakeFolder("002_files");
+        MakeFile("002.html");
+
+        var viewModel = CreateLoadedViewModel();
+
+        Assert.Equal(new[] { "001", "002" }, viewModel.Groups.Select(g => g.CommonName));
+        Assert.Equal("폴더 1개, 파일 1개", viewModel.Groups[0].CountText);
+    }
+
+    [Fact]
+    public void Rename_KeepsFilesSuffixOnTheFolderAndUndoRestoresIt()
+    {
+        MakeFolder("001_files");
+        MakeFile("001.html");
+        var viewModel = CreateLoadedViewModel();
+
+        RenameGroup(viewModel, "001", "page");
+
+        Assert.Equal(new[] { "page.html", "page_files" }, NamesInRoot());
+
+        viewModel.UndoCommand.Execute(null);
+
+        Assert.Equal(new[] { "001.html", "001_files" }, NamesInRoot());
+    }
+
+    [Fact]
+    public void Refresh_ListsGroupsInNaturalNumberOrder()
+    {
+        foreach (var name in new[] { "1.png", "10.png", "2.png", "20.png", "3.png" })
+        {
+            MakeFile(name);
+        }
+
+        var viewModel = CreateLoadedViewModel();
+
+        Assert.Equal(new[] { "1", "2", "3", "10", "20" }, viewModel.Groups.Select(g => g.CommonName));
+    }
+
+    [Fact]
+    public void AddFolderSuffix_SavesRegroupsAndRejectsDuplicate()
+    {
+        MakeFolder("001-data");
+        MakeFile("001.html");
+        var store = new FakeSuffixStore();
+        var viewModel = CreateLoadedViewModel(store);
+        Assert.Equal(2, viewModel.Groups.Count);
+
+        viewModel.NewFolderSuffixText = " -data ";
+        viewModel.AddFolderSuffixCommand.Execute(null);
+
+        Assert.Contains("-data", viewModel.FolderSuffixes);
+        Assert.Contains("-data", store.Saved.FolderSuffixes);
+        Assert.Single(viewModel.Groups);
+
+        viewModel.NewFolderSuffixText = "-DATA";
+        viewModel.AddFolderSuffixCommand.Execute(null);
+
+        Assert.Contains("이미 있는", viewModel.StatusMessage);
+        Assert.Equal(1, store.SaveCount);
+    }
+
+    [Fact]
+    public void RemoveFolderSuffix_SavesAndRegroups()
+    {
+        MakeFolder("001_files");
+        MakeFile("001.html");
+        var store = new FakeSuffixStore();
+        var viewModel = CreateLoadedViewModel(store);
+        Assert.Single(viewModel.Groups);
+
+        viewModel.SelectedFolderSuffix = "_files";
+        viewModel.RemoveFolderSuffixCommand.Execute(null);
+
+        Assert.Empty(viewModel.FolderSuffixes);
+        Assert.Empty(store.Saved.FolderSuffixes);
+        Assert.Equal(2, viewModel.Groups.Count);
     }
 
     private static void RenameGroup(ImageRenameViewModel viewModel, string commonName, string newName)
