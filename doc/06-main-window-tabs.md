@@ -54,6 +54,15 @@
 
 파일 이동은 `git mv`로 해서 이력을 유지했다. **작업 순서**: ① 앱 이름 변경(완료) → ② 폴더 구조/탭 셸 개편(아래) → ③ 탭 2 구현. 각 단계를 따로 커밋해서, 문제가 생기면 어느 단계 때문인지 바로 알 수 있게 한다.
 
+## 로컬 폴더 이름 변경 후 할 일
+
+사용자가 `e:\code\make-folder`를 `e:\code\folder-manage`로 바꾼 뒤(새 세션으로 시작) 이어서 할 일이다. 이 저장소의 지시서(`CLAUDE.md`, `doc/`)만 읽어도 이어서 작업할 수 있도록 적어 둔다.
+
+1. `git status`(깨끗한지)와 `git remote -v`(`origin`이 `https://github.com/iljoongs/folder-manage.git`인지)를 확인한다.
+2. 이전 경로가 남아 있는 빌드 캐시 때문에 문제가 생길 수 있으므로 `src/FolderManage`와 `tests/FolderManage.Tests`의 `bin/obj`를 지우고 `dotnet build`, `dotnet test`가 통과하는지 확인한다. `publish/`의 exe는 그대로 실행되지만 필요하면 [CLAUDE.md](../CLAUDE.md)의 명령으로 다시 만든다.
+3. 문서에서 "로컬 폴더는 아직 `make-folder`"라고 적은 곳을 현재 상태로 고친다: [CLAUDE.md](../CLAUDE.md) 맨 위 안내와 폴더 구조 주석, [02-architecture.md](02-architecture.md) 폴더 구조 주석, [05-open-decisions.md](05-open-decisions.md)의 "로컬 작업 폴더 이름" 행, 이 문서의 위 표와 제목.
+4. 새 세션에는 이전 대화와 프로젝트 메모리(경로별로 저장됨)가 이어지지 않는다. 필요한 작업 원칙은 [CLAUDE.md](../CLAUDE.md)의 "작업 원칙"에 모두 들어 있다.
+
 ## 구현 계획 (미구현 — 이름은 모두 가칭)
 
 현재 코드에서 탭 구조로 옮길 때의 변경 방향이다. 실제 구현 시점에 [05-open-decisions.md](05-open-decisions.md)의 결정을 반영해 다시 확인한다.

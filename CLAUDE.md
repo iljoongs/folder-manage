@@ -10,9 +10,10 @@
 여러 기능을 탭으로 나눠 제공하는 WPF 데스크톱 앱. 메인 윈도우는 탭 구조이고 탭은 기능 단위로 나눈다([doc/06-main-window-tabs.md](doc/06-main-window-tabs.md)). 탭 1 "폴더 만들기"는 상위 폴더를 선택하면 그 안에 시작~종료 범위의 연속된 번호 폴더를 만들어주는 기능(앱의 첫 기능, 이전 이름 make-folder)이고, 탭 2 "이미지 파일 이름 변경"은 한 폴더 안에서 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾸는 기능이다. 그 외 탭이 있다면 사용자가 설명할 예정이다.
 
 ## 기술 스택
-- .NET 8
-- WPF (Windows Presentation Foundation) — C#
-- MVVM 패턴 (Service → ViewModel → View 계층 분리, [doc/02-architecture.md](doc/02-architecture.md) 참고)
+- .NET 8 (SDK 8.0.x), WPF (Windows Presentation Foundation) — C#
+- MVVM 패턴 (Service → ViewModel → View 계층 분리, [doc/02-architecture.md](doc/02-architecture.md) 참고). `CommunityToolkit.Mvvm` 8.4.2의 소스 생성기(`[ObservableProperty]`, `[RelayCommand]`)를 쓴다 — 형제 프로젝트 `text-readers`와 같은 방식
+- 폴더 선택 창은 WPF 내장 `Microsoft.Win32.OpenFolderDialog`(.NET 8 이상, WinForms 불필요)
+- 테스트: xUnit (`tests/FolderManage.Tests`)
 
 ## 폴더 구조
 
@@ -26,7 +27,7 @@ folder-manage/            # (로컬 폴더 이름은 아직 make-folder)
 ├── src/
 │   └── FolderManage/      # 앱 본체 (Models/Services/ViewModels/Views, Assets/AppIcon.ico)
 └── tests/
-    └── FolderManage.Tests/  # xUnit 단위 테스트 (FolderNameGenerator, FolderCreationService)
+    └── FolderManage.Tests/  # xUnit 단위 테스트 (FolderNameGenerator, FolderCreationService, MainViewModel)
 ```
 
 ## 앱 아이콘
@@ -43,6 +44,20 @@ dotnet publish src/FolderManage/FolderManage.csproj -c Release -r win-x64 --self
 
 - 결과물은 `publish/win-x64/FolderManage.exe` 하나다(같이 생기는 `.pdb`는 디버그 심볼이라 배포에는 필요 없음). .NET 런타임을 그 안에 포함하므로 이 exe 하나만 다른 PC에 복사해도 실행된다.
 - `publish/`는 빌드 산출물이라 `.gitignore`에 포함되어 저장소에 커밋되지 않는다. 배포가 필요할 때마다 위 명령으로 다시 생성한다.
+
+## 빌드·테스트·실행 메모
+
+```
+dotnet build                              # 저장소 루트에서 (folder-manage.sln)
+dotnet test                               # 단위 테스트
+dotnet run --project src/FolderManage     # 앱 실행
+```
+
+- 앱이 실행 중이면 exe가 잠겨 빌드/배포가 실패하므로 먼저 종료한다.
+- 화면 동작은 앱을 실행한 채 PowerShell로 확인했다: 스크린샷은 `System.Drawing`의 `CopyFromScreen`, 조작은 UI Automation(`System.Windows.Automation`, 입력란은 `ValuePattern`, 버튼은 `InvokePattern`). 확인용 임시 폴더·스크린샷은 끝나면 지운다.
+- VS Code의 C# 확장이 `bin/obj`를 열어 둔 상태라 폴더 이름 변경이 `Permission denied`로 막힐 수 있다 — `bin/obj`를 지우고 다시 시도한다(에디터 프로세스는 건드리지 않는다).
+- WPF 프로젝트의 ImplicitUsings에는 `System.IO`가 없으므로 `Path`/`Directory`를 쓰는 파일에는 `using System.IO;`가 필요하다.
+- 커밋할 때 나오는 "LF will be replaced by CRLF" 경고는 Windows 줄바꿈 설정 때문이며 정상이다.
 
 ## 보조 지시서 목록 (doc/ 폴더)
 
@@ -75,3 +90,5 @@ dotnet publish src/FolderManage/FolderManage.csproj -c Release -r win-x64 --self
 5. 문서를 고칠 때 별도의 백업(history 폴더 등)은 두지 않는다 — git 커밋 이력이 변경 기록 역할을 한다. 의미 있는 단위로 커밋한다.
 6. 사용자 명령으로 파일이 수정되고 작업이 성공적으로 끝나면, 별도 요청/확인 없이 git commit(커밋 메시지는 영어로 직접 작성)과 push까지 수행한다.
 7. 명령 수행 후, 이번 작업에서 참조하거나 수정한 보조 지시서(doc/ 폴더) 목록을 사용자에게 알려준다.
+8. 사용자가 명시적으로 "코드 만들어", "구현해줘" 등으로 지시하기 전에는 새 기능 코드를 만들지 않고 계획(문서)부터 정리한다. 이름 변경처럼 범위가 정해진 수정만 지시받은 경우에는 그 범위 안에서만 코드를 바꾼다.
+9. GitHub 저장소나 로컬 작업 폴더의 이름 변경처럼 프로젝트 밖에 영향을 주는 작업은 사용자가 직접 하거나 명시적으로 지시한 경우에만 한다.
