@@ -14,7 +14,7 @@
 | 2 | 이미지 파일 이름 변경 | 폴더와 파일이 함께 있는 폴더에서, (확장자·`.debug`/`.debug-result` 접미사를 뺀) 공통 이름이 같은 폴더·파일들의 이름을 함께 바꾼다 | [07-image-rename-spec.md](07-image-rename-spec.md) |
 | 3 이후 | (미정) | 사용자가 설명하면 이 표에 추가한다 | (기능 설명 후 작성) |
 
-탭 이름과 순서(1, 2)는 사용자가 정했다. 탭 2의 세부 규칙 중 정해지지 않은 부분은 [05-open-decisions.md](05-open-decisions.md)의 "탭 2 미결정 항목"에 있다.
+탭 이름과 순서(1, 2)는 사용자가 정했다. 탭 2의 규칙은 사용자 답변으로 확정했고([07-image-rename-spec.md](07-image-rename-spec.md)), 남은 세부는 [05-open-decisions.md](05-open-decisions.md)의 "탭 2 남은 세부 항목"에 있다.
 
 ## 메인 윈도우(셸)의 역할
 
