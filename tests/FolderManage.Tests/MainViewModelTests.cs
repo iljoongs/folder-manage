@@ -1,7 +1,7 @@
-using MakeFolder.Services;
-using MakeFolder.ViewModels;
+using FolderManage.Services;
+using FolderManage.ViewModels;
 
-namespace MakeFolder.Tests;
+namespace FolderManage.Tests;
 
 public class MainViewModelTests : IDisposable
 {
@@ -9,7 +9,7 @@ public class MainViewModelTests : IDisposable
 
     public MainViewModelTests()
     {
-        _tempRoot = Path.Combine(Path.GetTempPath(), "MakeFolderVmTests_" + Guid.NewGuid());
+        _tempRoot = Path.Combine(Path.GetTempPath(), "FolderManageVmTests_" + Guid.NewGuid());
         Directory.CreateDirectory(_tempRoot);
     }
 

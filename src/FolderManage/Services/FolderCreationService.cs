@@ -1,7 +1,7 @@
 using System.IO;
-using MakeFolder.Models;
+using FolderManage.Models;
 
-namespace MakeFolder.Services;
+namespace FolderManage.Services;
 
 /// <summary>
 /// 상위 폴더 기준으로 폴더 이름의 상태를 확인하고 실제로 생성하는 로직 (doc/03-folder-naming-spec.md).

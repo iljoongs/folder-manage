@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MakeFolder.ViewModels;
+using FolderManage.ViewModels;
 
-namespace MakeFolder.Views;
+namespace FolderManage.Views;
 
 public partial class MainWindow : Window
 {

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MakeFolder\MakeFolder.csproj" />
+    <ProjectReference Include="..\..\src\FolderManage\FolderManage.csproj" />
   </ItemGroup>
 
 </Project>

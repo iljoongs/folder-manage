@@ -4,7 +4,7 @@
 
 여러 기능을 **탭**으로 나눠 제공하는 WPF 데스크톱 앱이다. 메인 윈도우는 탭 구조이고, 탭은 기능 단위로 나눈다. 탭 구성과 공통 규칙은 [06-main-window-tabs.md](06-main-window-tabs.md), 아직 정해지지 않은 사항은 [05-open-decisions.md](05-open-decisions.md)를 본다.
 
-- **탭 1: 폴더 만들기** — 지금까지 만든 make-folder 기능. 아래 "탭 1"에서 설명한다.
+- **탭 1: 폴더 만들기** — 지금까지 만든 기능(앱의 이전 이름이 make-folder). 아래 "탭 1"에서 설명한다.
 - **탭 2: 이미지 파일 이름 변경** — 한 폴더 안에서 공통 이름(확장자와 `.debug`/`.debug-result` 접미사를 뺀 이름)이 같은 폴더·파일들의 이름을 함께 바꾼다. 상세는 [07-image-rename-spec.md](07-image-rename-spec.md).
 - **탭 3 이후**: 있다면 사용자가 기능을 설명해 줄 예정이다. 설명을 받은 뒤 이 문서와 [06-main-window-tabs.md](06-main-window-tabs.md)에 추가한다.
 

@@ -1,9 +1,9 @@
 ﻿using System.Windows;
-using MakeFolder.Services;
-using MakeFolder.ViewModels;
-using MakeFolder.Views;
+using FolderManage.Services;
+using FolderManage.ViewModels;
+using FolderManage.Views;
 
-namespace MakeFolder;
+namespace FolderManage;
 
 public partial class App : Application
 {

@@ -1,4 +1,4 @@
-namespace MakeFolder.Models;
+namespace FolderManage.Models;
 
 public enum FolderItemStatus
 {

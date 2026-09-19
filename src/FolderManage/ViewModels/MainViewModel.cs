@@ -2,10 +2,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MakeFolder.Models;
-using MakeFolder.Services;
+using FolderManage.Models;
+using FolderManage.Services;
 
-namespace MakeFolder.ViewModels;
+namespace FolderManage.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {

@@ -1,6 +1,6 @@
-using MakeFolder.Models;
+using FolderManage.Models;
 
-namespace MakeFolder.ViewModels;
+namespace FolderManage.ViewModels;
 
 public sealed class PreviewRowViewModel
 {

@@ -30,22 +30,22 @@
 현재:
 
 ```
-make-folder/
+folder-manage/                 # (로컬 폴더 이름은 아직 make-folder)
 ├── CLAUDE.md
-├── make-folder.sln
+├── folder-manage.sln
 ├── .gitignore
 ├── doc/                       # 보조 지시서 (이 폴더)
 ├── src/
-│   └── MakeFolder/            # WPF 프로젝트 본체
+│   └── FolderManage/          # WPF 프로젝트 본체
 │       ├── Models/
 │       ├── Services/
 │       ├── ViewModels/
 │       └── Views/
 └── tests/
-    └── MakeFolder.Tests/      # xUnit 단위 테스트
+    └── FolderManage.Tests/    # xUnit 단위 테스트
 ```
 
-탭이 늘어나면 Models/Services/ViewModels/Views를 기능(탭)별 폴더로 나눌지는 [05-open-decisions.md](05-open-decisions.md)의 미결정 항목이다. 앱 이름은 `folder-manage`(코드 표기 `FolderManage`)로 정했지만 위 트리는 코드의 현재 상태(`MakeFolder`)를 그대로 적은 것이며, 이름 변경 때 함께 갱신한다 → [06-main-window-tabs.md](06-main-window-tabs.md) "앱 이름 변경 계획".
+탭이 늘어나면 Models/Services/ViewModels/Views를 기능(탭)별 폴더로 나눌지는 [05-open-decisions.md](05-open-decisions.md)의 미결정 항목이다. 앱 이름은 `folder-manage`(코드 표기 `FolderManage`)이고 위 트리는 이미 새 이름으로 바뀐 상태다(로컬 폴더 이름만 사용자가 바꿀 예정) → [06-main-window-tabs.md](06-main-window-tabs.md) "앱 이름 변경".
 
 ## 테스트 가능성
 

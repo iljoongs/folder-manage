@@ -1,7 +1,7 @@
-using MakeFolder.Models;
-using MakeFolder.Services;
+using FolderManage.Models;
+using FolderManage.Services;
 
-namespace MakeFolder.Tests;
+namespace FolderManage.Tests;
 
 public class FolderCreationServiceTests : IDisposable
 {
@@ -9,7 +9,7 @@ public class FolderCreationServiceTests : IDisposable
 
     public FolderCreationServiceTests()
     {
-        _tempRoot = Path.Combine(Path.GetTempPath(), "MakeFolderTests_" + Guid.NewGuid());
+        _tempRoot = Path.Combine(Path.GetTempPath(), "FolderManageTests_" + Guid.NewGuid());
         Directory.CreateDirectory(_tempRoot);
     }
 

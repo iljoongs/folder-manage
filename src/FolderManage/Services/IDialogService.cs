@@ -1,4 +1,4 @@
-namespace MakeFolder.Services;
+namespace FolderManage.Services;
 
 public interface IDialogService
 {

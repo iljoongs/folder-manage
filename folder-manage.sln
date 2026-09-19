@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AB043F76-561E-409C-979F-10179B3DA570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeFolder", "src\MakeFolder\MakeFolder.csproj", "{FE45D98A-DF40-4242-A704-3E754B760A1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolderManage", "src\FolderManage\FolderManage.csproj", "{FE45D98A-DF40-4242-A704-3E754B760A1B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{530FF92D-36D3-49FC-A009-BF56A221A446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeFolder.Tests", "tests\MakeFolder.Tests\MakeFolder.Tests.csproj", "{1188B6E8-3B1F-49D3-8C9B-9A2E7549D683}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FolderManage.Tests", "tests\FolderManage.Tests\FolderManage.Tests.csproj", "{1188B6E8-3B1F-49D3-8C9B-9A2E7549D683}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

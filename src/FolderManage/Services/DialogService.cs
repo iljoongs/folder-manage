@@ -1,7 +1,7 @@
 using System.Windows;
 using Microsoft.Win32;
 
-namespace MakeFolder.Services;
+namespace FolderManage.Services;
 
 public sealed class DialogService : IDialogService
 {

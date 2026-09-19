@@ -1,8 +1,8 @@
 using System.IO;
 using System.Text.RegularExpressions;
-using MakeFolder.Models;
+using FolderManage.Models;
 
-namespace MakeFolder.Services;
+namespace FolderManage.Services;
 
 /// <summary>
 /// 폴더 이름 생성 규칙(doc/03-folder-naming-spec.md)을 구현하는 순수 로직.

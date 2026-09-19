@@ -1,7 +1,7 @@
-using MakeFolder.Models;
-using MakeFolder.Services;
+using FolderManage.Models;
+using FolderManage.Services;
 
-namespace MakeFolder.Tests;
+namespace FolderManage.Tests;
 
 public class FolderNameGeneratorTests
 {
